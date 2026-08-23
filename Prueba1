@@ -54,6 +54,15 @@ nav.topbar{position:sticky;top:0;z-index:50;background:rgba(245,247,249,0.9);bac
   .hero-actions{flex-direction:column;}
 }
 
+/* Densidad general en móvil: menos aire entre secciones, texto más compacto */
+@media(max-width:820px){
+  section{padding:40px 0;}
+  .section-head{margin-bottom:26px;}
+  .section-head p{font-size:14px;}
+  .card, .problem-card, .step-card{padding:20px;}
+  .audience-card{padding:22px;}
+}
+
 /* ---------- MOBILE STICKY CTA (comprar por WhatsApp) ---------- */
 .mobile-cta-bar{
   position:fixed;left:0;right:0;bottom:0;z-index:70;
@@ -126,22 +135,39 @@ section{padding:76px 0;}
 .tl-label{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13.5px;margin-top:4px;padding:0 4px;}
 .tl-desc{font-size:12px;color:var(--ink-soft);margin-top:5px;padding:0 6px;line-height:1.45;}
 @media(max-width:880px){
-  .timeline-track{flex-direction:column;gap:26px;align-items:flex-start;}
+  .timeline-wrap{padding:26px 18px 22px;}
+  .timeline-track{flex-direction:column;gap:20px;align-items:flex-start;}
   .timeline-track::before{top:0;bottom:0;left:15px;right:auto;width:2px;height:auto;background:linear-gradient(180deg,var(--border),var(--gold),var(--border));}
   .tl-node{flex-direction:row;text-align:left;align-items:flex-start;gap:14px;width:100%;}
   .tl-month,.tl-label,.tl-desc{margin-top:0;padding:0;}
   .tl-text{display:flex;flex-direction:column;gap:2px;}
+  .tl-desc{display:none;} /* en móvil basta mes + etiqueta; el detalle se ve al comprar */
+  .timeline-footnote{margin-top:22px;padding-top:18px;}
 }
 .timeline-footnote{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:32px;padding-top:24px;border-top:1px dashed var(--border);}
 .tf-chip{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:6px 12px;}
 
 /* ---------- AUDIENCIA ---------- */
 .audience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;}
-@media(max-width:560px){.audience-grid{grid-template-columns:1fr;}}
 .audience-card{background:var(--navy-deep);color:var(--ink-on-dark);border-radius:var(--radius);padding:26px;}
 .audience-card h3{font-size:17px;color:#fff;margin-bottom:10px;}
 .audience-card p{font-size:13.5px;color:var(--ink-on-dark-soft);}
 .audience-card .tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--gold);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em;}
+
+/* ---------- CARRUSEL HORIZONTAL EN MÓVIL (problema, audiencia, pasos) ----------
+   En vez de apilar tarjetas verticalmente (mucho scroll), en móvil se deslizan
+   horizontalmente — patrón más liviano y habitual en apps. */
+@media(max-width:820px){
+  .scroll-mobile{
+    display:flex !important; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory;
+    margin:0 -20px; padding:4px 20px 14px; -webkit-overflow-scrolling:touch;
+  }
+  .scroll-mobile::-webkit-scrollbar{display:none;}
+  .scroll-mobile > *{flex:0 0 82%; scroll-snap-align:start;}
+  .scroll-hint{display:flex;justify-content:center;gap:6px;margin-top:2px;}
+  .scroll-hint span{width:5px;height:5px;border-radius:50%;background:var(--border);}
+}
+@media(min-width:821px){ .scroll-hint{display:none;} }
 
 /* ---------- QUÉ CALCULA (chips) ---------- */
 .calc-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:820px;margin:0 auto;}
@@ -209,7 +235,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       <a href="#precio">Precio</a>
       <a href="#faq">Preguntas</a>
     </div>
-    <a href="#comprar" class="btn btn-outline nav-cta js-buy">Descargar</a>
+    <a href="#comprar" class="btn btn-outline nav-cta js-buy">Comprar</a>
   </div>
 </nav>
 
@@ -220,7 +246,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       <h1>Fiel a la ley,<br><em>fiel a tu bolsillo.</em></h1>
       <p class="lead">Boleta Fiel te ayuda a comprobar si tu sueldo, gratificación, CTS y vacaciones están bien calculados — sea tu primer trabajo o el número quince. También la usan contadores y áreas de RR.HH. para procesar planillas completas.</p>
       <div class="hero-actions">
-        <a href="#comprar" class="btn btn-terracota js-buy">Descargar Boleta Fiel →</a>
+        <a href="#comprar" class="btn btn-terracota js-buy">Obtener acceso →</a>
         <a href="#calendario" class="btn btn-ghost-dark">Ver cómo funciona</a>
       </div>
       <div class="hero-badges">
@@ -247,7 +273,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       <h2>Cada mes, la misma duda: ¿me pagaron bien?</h2>
       <p>Casi nadie explica cómo se calcula tu sueldo cuando empiezas a trabajar — y menos aún cuando llega tu primera gratificación o tu CTS. Boleta Fiel existe para que dejes de adivinar.</p>
     </div>
-    <div class="problem-grid">
+    <div class="problem-grid scroll-mobile">
       <div class="problem-card">
         <div class="num mono">01</div>
         <h3>Tu primer trabajo, sin manual de uso</h3>
@@ -264,6 +290,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
         <p>Un descuento mal hecho o un beneficio mal calculado, si no lo revisas, se queda así — mes tras mes.</p>
       </div>
     </div>
+    <div class="scroll-hint"><span></span><span></span><span></span></div>
   </div>
 </section>
 
@@ -317,7 +344,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       <span class="eyebrow-light">Para quién es</span>
       <h2>Hecho para quien quiere estar seguro de su sueldo</h2>
     </div>
-    <div class="audience-grid">
+    <div class="audience-grid scroll-mobile">
       <div class="audience-card">
         <span class="tag">Trabajador de a pie</span>
         <h3>Cualquier mes, cualquier duda</h3>
@@ -339,6 +366,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
         <p>Simula liquidaciones y beneficios sociales antes de procesarlos en tu sistema principal.</p>
       </div>
     </div>
+    <div class="scroll-hint"><span></span><span></span><span></span><span></span></div>
   </div>
 </section>
 
@@ -349,11 +377,11 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       <h2>Pago por Yape, en tres pasos</h2>
       <p>Todo el proceso ocurre por WhatsApp. No necesitas tarjeta ni crear una cuenta.</p>
     </div>
-    <div class="steps-grid">
+    <div class="steps-grid scroll-mobile">
       <div class="step-card">
         <div class="step-num">1</div>
         <h3>Escríbenos por WhatsApp</h3>
-        <p>Al tocar "Descargar" se abre WhatsApp con un mensaje ya escrito, listo para enviar. Te respondemos con el número para yapear.</p>
+        <p>Al tocar "Obtener acceso" se abre WhatsApp con un mensaje ya escrito, listo para enviar. Te respondemos con el número para yapear.</p>
       </div>
       <div class="step-card">
         <div class="step-num">2</div>
@@ -363,10 +391,11 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       </div>
       <div class="step-card">
         <div class="step-num">3</div>
-        <h3>Recibe tu acceso</h3>
-        <p>En cuanto verificamos tu captura, te enviamos el enlace de descarga y tu clave de acceso personal — es tuya, evita compartirla.</p>
+        <h3>Entra con tu WhatsApp</h3>
+        <p>Activamos tu número y listo: entras directo a la app desde tu navegador, usando tu propio WhatsApp como clave. Nada que descargar ni instalar.</p>
       </div>
     </div>
+    <div class="scroll-hint"><span></span><span></span><span></span></div>
   </div>
 </section>
 
@@ -375,7 +404,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
     <div class="section-head">
       <span class="eyebrow-light">Precio</span>
       <h2>Un pago, acceso completo</h2>
-      <p>Sin suscripciones ni letra chica. Descargas el archivo y lo usas en tu computadora, las veces que quieras.</p>
+      <p>Sin suscripciones ni letra chica. Activamos tu acceso a tu número de WhatsApp y entras desde cualquier navegador, las veces que quieras.</p>
     </div>
     <div class="price-card">
       <span class="badge">Pago único</span>
@@ -384,13 +413,14 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       <p class="price-desc">Incluye actualización de tasas AFP, ONP, RMV y UIT durante 12 meses desde la compra.</p>
       <ul class="price-list">
         <li><span class="ck">✓</span>Las 8 calculadoras del régimen Ley 728</li>
+        <li><span class="ck">✓</span>Incluye el módulo de practicantes (Modalidades Formativas, Ley N° 28518)</li>
         <li><span class="ck">✓</span>Exportación a PDF de cada cálculo</li>
-        <li><span class="ck">✓</span>Funciona sin conexión, en tu propio equipo</li>
+        <li><span class="ck">✓</span>Accede desde cualquier navegador, sin instalar nada</li>
         <li><span class="ck">✓</span>Sin límite de trabajadores ni de cálculos</li>
         <li><span class="ck">✓</span>Actualizaciones de tasas por 12 meses</li>
       </ul>
-      <a href="#comprar" class="btn btn-terracota js-buy">Descargar Boleta Fiel</a>
-      <div class="price-fine">Pago único por Yape. Recibirás tu enlace y clave de acceso por WhatsApp tras verificar el pago.<br>Herramienta referencial: no sustituye asesoría legal, laboral ni tributaria profesional.</div>
+      <a href="#comprar" class="btn btn-terracota js-buy">Obtener mi acceso</a>
+      <div class="price-fine">Pago único por Yape. Activamos tu acceso por WhatsApp — entras con tu propio número, sin archivos que descargar.<br>Herramienta referencial: no sustituye asesoría legal, laboral ni tributaria profesional.</div>
     </div>
   </div>
 </section>
@@ -412,7 +442,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       </details>
       <details>
         <summary>¿Necesito instalar algo?</summary>
-        <p>No. Es un archivo que abres directamente en tu navegador, sin instalación ni conexión a internet para calcular.</p>
+        <p>No. Entras directo desde el navegador de tu celular o computadora, usando tu WhatsApp como clave. No hay nada que instalar ni ningún archivo que descargar.</p>
       </details>
       <details>
         <summary>¿Puedo usarlo para varios trabajadores?</summary>
@@ -436,7 +466,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       <h2>Deja de recalcular gratificaciones a mano</h2>
       <p>Un pago, acceso inmediato, y el régimen 728 resuelto en una sola herramienta.</p>
       <div class="hero-actions">
-        <a href="#comprar" class="btn btn-terracota js-buy">Descargar Boleta Fiel — S/ 9.99</a>
+        <a href="#comprar" class="btn btn-terracota js-buy">Obtener acceso — S/ 9.99</a>
       </div>
     </div>
   </div>
