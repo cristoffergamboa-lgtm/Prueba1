@@ -1,1 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boleta Fiel — ¿Tu sueldo está bien calculado? Compruébalo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-deep:#0F2A3D; --navy:#1E4B6B; --navy-dark:#123349;
+  --paper:#F5F7F9; --surface:#FFFFFF; --border:#DDE3E8;
+  --ink:#131B24; --ink-soft:#55606B; --ink-faint:#8994A0;
+  --ink-on-dark:#EAF1F6; --ink-on-dark-soft:#9FB4C4;
+  --terracota:#A85D28; --terracota-light:#C97A45;
+  --gold:#D4A24C;
+  --success:#3FBE83; --danger:#E8877A;
+  --shadow:0 1px 2px rgba(19,27,36,.06), 0 1px 0 rgba(19,27,36,.04);
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+img,svg{display:block;max-width:100%;}
+.container{max-width:1120px;margin:0 auto;padding:0 22px;}
+h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;margin:0;letter-spacing:-0.015em;}
+p{margin:0;line-height:1.6;}
+a{color:inherit;}
+.mono{font-family:'IBM Plex Mono',monospace;}
 
+/* ---------- NAV ---------- */
+nav.topbar{position:sticky;top:0;z-index:50;background:rgba(245,247,249,0.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:17px;}
+.brand .coin{width:32px;height:32px;border-radius:8px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;}
+.navlinks{display:flex;gap:26px;font-size:14px;font-weight:600;color:var(--ink-soft);}
+.navlinks a{text-decoration:none;transition:color .15s;}
+.navlinks a:hover{color:var(--navy);}
+.btn{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;border-radius:8px;border:1px solid transparent;padding:11px 20px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:all .15s ease;}
+.btn-terracota{background:var(--terracota);color:#fff;}
+.btn-terracota:hover{background:#8F4C1F;}
+.btn-ghost-dark{background:rgba(255,255,255,0.08);color:var(--ink-on-dark);border-color:rgba(255,255,255,0.25);}
+.btn-ghost-dark:hover{background:rgba(255,255,255,0.16);}
+.btn-outline{border-color:var(--border);color:var(--ink);background:var(--surface);}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy);}
+.nav-cta{display:none;}
+@media(min-width:720px){.nav-cta{display:inline-flex;}}
+@media(max-width:720px){.navlinks{display:none;}}
+
+/* Tap targets & full-width buttons on small phones */
+@media(max-width:480px){
+  .btn{min-height:48px;font-size:14.5px;}
+  .hero-actions .btn, .cta-final .hero-actions .btn{width:100%;justify-content:center;}
+  .hero-actions{flex-direction:column;}
+}
+
+/* Densidad general en móvil: menos aire entre secciones, texto más compacto */
+@media(max-width:820px){
+  section{padding:40px 0;}
+  .section-head{margin-bottom:26px;}
+  .section-head p{font-size:14px;}
+  .card, .problem-card, .step-card{padding:20px;}
+  .audience-card{padding:22px;}
+}
+
+/* ---------- MOBILE STICKY CTA (comprar por WhatsApp) ---------- */
+.mobile-cta-bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:70;
+  display:none;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  box-shadow:0 -6px 20px rgba(19,27,36,0.1);
+  transform:translateY(100%);transition:transform .25s ease;
+}
+.mobile-cta-bar.show{transform:translateY(0);}
+.mobile-cta-bar .mcb-price{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;color:var(--ink);line-height:1.15;}
+.mobile-cta-bar .mcb-price small{display:block;font-family:'Inter',sans-serif;font-weight:500;font-size:10.5px;color:var(--ink-faint);}
+.mobile-cta-bar .btn{padding:12px 18px;font-size:13.5px;white-space:nowrap;}
+@media(max-width:720px){
+  .mobile-cta-bar{display:flex;}
+  body{padding-bottom:78px;}
+}
+
+/* ---------- HERO ---------- */
+.hero{background:radial-gradient(1100px 500px at 15% -10%, #16394F 0%, var(--navy-deep) 55%);color:var(--ink-on-dark);padding:74px 0 90px;position:relative;overflow:hidden;}
+.hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:52px;align-items:center;}
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr;} .hero{padding:52px 0 60px;}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);background:rgba(212,162,76,0.12);border:1px solid rgba(212,162,76,0.3);padding:6px 12px;border-radius:20px;margin-bottom:20px;}
+.hero h1{font-size:44px;line-height:1.12;color:#fff;}
+@media(max-width:600px){.hero h1{font-size:32px;}}
+.hero h1 em{font-style:normal;color:var(--gold);}
+.hero p.lead{margin-top:18px;font-size:17px;color:var(--ink-on-dark-soft);max-width:520px;line-height:1.6;}
+.hero-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;}
+.hero-badges{display:flex;gap:18px;margin-top:34px;flex-wrap:wrap;}
+.hero-badge{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-on-dark-soft);}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--success);}
+
+/* Mini boleta mock (support element, quiet) */
+.mock{background:var(--surface);border-radius:14px;padding:22px 22px 0;box-shadow:0 24px 60px rgba(0,0,0,0.35);transform:rotate(-1.2deg);}
+.mock-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.mock-head .t1{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:var(--ink);}
+.mock-head .t2{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-faint);}
+.mock-row{display:flex;justify-content:space-between;padding:9px 0;font-family:'IBM Plex Mono',monospace;font-size:13px;border-bottom:1px dashed var(--border);color:var(--ink-soft);}
+.mock-row b{color:var(--ink);font-weight:600;}
+.mock-row.add span:last-child{color:#1F7A4D;}
+.mock-row.sub span:last-child{color:#B3261E;}
+.mock-net{margin:0 -22px;padding:16px 22px;background:var(--navy);color:#fff;border-radius:0 0 14px 14px;display:flex;justify-content:space-between;align-items:baseline;}
+.mock-net .l{font-size:11.5px;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;opacity:.85;}
+.mock-net .v{font-family:'Plus Jakarta Sans',sans-serif;font-size:23px;font-weight:800;}
+
+/* ---------- SECTIONS GENERIC ---------- */
+section{padding:76px 0;}
+@media(max-width:700px){section{padding:52px 0;}}
+.section-head{max-width:640px;margin:0 auto 42px;text-align:center;}
+.eyebrow-light{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--terracota);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;display:block;}
+.section-head h2{font-size:30px;}
+@media(max-width:600px){.section-head h2{font-size:24px;}}
+.section-head p{margin-top:12px;color:var(--ink-soft);font-size:15.5px;}
+
+/* ---------- PROBLEMA ---------- */
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:820px){.problem-grid{grid-template-columns:1fr;}}
+.problem-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.problem-card .num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--terracota);margin-bottom:10px;}
+.problem-card h3{font-size:16.5px;margin-bottom:8px;}
+.problem-card p{font-size:14px;color:var(--ink-soft);}
+
+/* ---------- TIMELINE (signature element) ---------- */
+.timeline-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:38px 30px 30px;box-shadow:var(--shadow);}
+.timeline-track{position:relative;display:flex;justify-content:space-between;gap:8px;padding-top:6px;}
+.timeline-track::before{content:'';position:absolute;top:15px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--border),var(--gold),var(--border));}
+.tl-node{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
+.tl-dot{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;border:4px solid var(--surface);z-index:2;box-shadow:0 0 0 1px var(--border);}
+.tl-month{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--terracota);margin-top:10px;text-transform:uppercase;letter-spacing:0.04em;}
+.tl-label{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13.5px;margin-top:4px;padding:0 4px;}
+.tl-desc{font-size:12px;color:var(--ink-soft);margin-top:5px;padding:0 6px;line-height:1.45;}
+@media(max-width:880px){
+  .timeline-wrap{padding:26px 18px 22px;}
+  .timeline-track{flex-direction:column;gap:20px;align-items:flex-start;}
+  .timeline-track::before{top:0;bottom:0;left:15px;right:auto;width:2px;height:auto;background:linear-gradient(180deg,var(--border),var(--gold),var(--border));}
+  .tl-node{flex-direction:row;text-align:left;align-items:flex-start;gap:14px;width:100%;}
+  .tl-month,.tl-label,.tl-desc{margin-top:0;padding:0;}
+  .tl-text{display:flex;flex-direction:column;gap:2px;}
+  .tl-desc{display:none;} /* en móvil basta mes + etiqueta; el detalle se ve al comprar */
+  .timeline-footnote{margin-top:22px;padding-top:18px;}
+}
+.timeline-footnote{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:32px;padding-top:24px;border-top:1px dashed var(--border);}
+.tf-chip{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:6px 12px;}
+
+/* ---------- AUDIENCIA ---------- */
+.audience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;}
+.audience-card{background:var(--navy-deep);color:var(--ink-on-dark);border-radius:var(--radius);padding:26px;}
+.audience-card h3{font-size:17px;color:#fff;margin-bottom:10px;}
+.audience-card p{font-size:13.5px;color:var(--ink-on-dark-soft);}
+.audience-card .tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--gold);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em;}
+
+/* ---------- CARRUSEL HORIZONTAL EN MÓVIL (problema, audiencia, pasos) ----------
+   En vez de apilar tarjetas verticalmente (mucho scroll), en móvil se deslizan
+   horizontalmente — patrón más liviano y habitual en apps. */
+@media(max-width:820px){
+  .scroll-mobile{
+    display:flex !important; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory;
+    margin:0 -20px; padding:4px 20px 14px; -webkit-overflow-scrolling:touch;
+  }
+  .scroll-mobile::-webkit-scrollbar{display:none;}
+  .scroll-mobile > *{flex:0 0 82%; scroll-snap-align:start;}
+  .scroll-hint{display:flex;justify-content:center;gap:6px;margin-top:2px;}
+  .scroll-hint span{width:5px;height:5px;border-radius:50%;background:var(--border);}
+}
+@media(min-width:821px){ .scroll-hint{display:none;} }
+
+/* ---------- QUÉ CALCULA (chips) ---------- */
+.calc-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:820px;margin:0 auto;}
+.calc-chip{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px;}
+.calc-chip .ok{color:var(--navy);font-weight:800;}
+
+/* ---------- COMO COMPRAR (Yape + WhatsApp) ---------- */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:820px){.steps-grid{grid-template-columns:1fr;}}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);position:relative;}
+.step-card .step-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;margin-bottom:14px;}
+.step-card h3{font-size:15.5px;margin-bottom:8px;}
+.step-card p{font-size:13.5px;color:var(--ink-soft);}
+.step-connector{display:none;}
+@media(min-width:821px){
+  .steps-grid{position:relative;}
+  .steps-grid::before{content:'';position:absolute;top:15px;left:16.6%;right:16.6%;height:2px;background:var(--border);z-index:0;}
+}
+.yape-badge{display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--navy);background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:5px 11px;margin-top:10px;}
+.yape-badge b{color:var(--terracota);}
+/* ---------- PRECIO ---------- */
+.price-card{max-width:460px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:34px 32px;box-shadow:0 20px 50px rgba(19,27,36,0.08);position:relative;}
+.price-card .badge{position:absolute;top:-13px;left:32px;background:var(--terracota);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 12px;border-radius:20px;letter-spacing:0.03em;}
+.price-card h3{font-size:18px;margin-bottom:6px;}
+.price-card .price{display:flex;align-items:baseline;gap:8px;margin:18px 0 6px;}
+.price-card .price .amt{font-family:'Plus Jakarta Sans',sans-serif;font-size:44px;font-weight:800;color:var(--navy);}
+.price-card .price .per{font-size:13px;color:var(--ink-faint);}
+.price-card .price-desc{font-size:13px;color:var(--ink-soft);margin-bottom:22px;}
+.price-list{list-style:none;padding:0;margin:0 0 26px;display:flex;flex-direction:column;gap:11px;}
+.price-list li{display:flex;gap:10px;font-size:14px;color:var(--ink);}
+.price-list li .ck{color:var(--navy);font-weight:800;flex-shrink:0;}
+.price-card .btn{width:100%;justify-content:center;padding:13px;font-size:14.5px;}
+.price-fine{font-size:11.5px;color:var(--ink-faint);text-align:center;margin-top:14px;}
+
+/* ---------- FAQ ---------- */
+.faq{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:10px;}
+details{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px 4px;}
+summary{cursor:pointer;list-style:none;padding:16px 18px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;}
+summary::-webkit-details-marker{display:none;}
+summary::after{content:'+';font-size:20px;color:var(--terracota);font-weight:400;}
+details[open] summary::after{content:'−';}
+details p{padding:0 18px 16px;font-size:13.5px;color:var(--ink-soft);line-height:1.6;}
+
+/* ---------- CTA FINAL ---------- */
+.cta-final{background:var(--navy-deep);color:var(--ink-on-dark);border-radius:20px;padding:52px 40px;text-align:center;}
+.cta-final h2{color:#fff;font-size:28px;}
+.cta-final p{color:var(--ink-on-dark-soft);margin-top:10px;max-width:480px;margin-left:auto;margin-right:auto;}
+.cta-final .hero-actions{justify-content:center;margin-top:26px;}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--border);padding:34px 0;}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.footer-legal{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-faint);max-width:640px;line-height:1.6;}
+.footer-brand{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="container topbar-inner">
+    <div class="brand"><div class="coin">BF</div>Boleta Fiel</div>
+    <div class="navlinks">
+      <a href="#calendario">Cómo funciona</a>
+      <a href="#comprar">Cómo comprar</a>
+      <a href="#precio">Precio</a>
+      <a href="#faq">Preguntas</a>
+    </div>
+    <a href="#comprar" class="btn btn-outline nav-cta js-buy">Comprar</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">● Para trabajadores del régimen privado — Ley N° 728</span>
+      <h1>Fiel a la ley,<br><em>fiel a tu bolsillo.</em></h1>
+      <p class="lead">Boleta Fiel te ayuda a comprobar si tu sueldo, gratificación, CTS y vacaciones están bien calculados — sea tu primer trabajo o el número quince. También la usan contadores y áreas de RR.HH. para procesar planillas completas.</p>
+      <div class="hero-actions">
+        <a href="#comprar" class="btn btn-terracota js-buy">Obtener acceso →</a>
+        <a href="#calendario" class="btn btn-ghost-dark">Ver cómo funciona</a>
+      </div>
+      <div class="hero-badges">
+        <div class="hero-badge"><span class="dot"></span>Ley N° 728 y normas conexas</div>
+        <div class="hero-badge"><span class="dot"></span>Tasas SBS ago-2026</div>
+        <div class="hero-badge"><span class="dot"></span>Pago por Yape</div>
+      </div>
+    </div>
+    <div class="mock">
+      <div class="mock-head"><div class="t1">Detalle del cálculo</div><div class="t2">AGO 2026</div></div>
+      <div class="mock-row add"><span>Remuneración básica</span><b>S/ 2,500.00</b></div>
+      <div class="mock-row add"><span>Asignación familiar</span><b>S/ 113.00</b></div>
+      <div class="mock-row sub"><span>Aporte AFP + prima + comisión</span><b>-S/ 342.30</b></div>
+      <div class="mock-row sub"><span>Renta de quinta</span><b>-S/ 0.00</b></div>
+      <div class="mock-net"><span class="l">Neto a pagar</span><span class="v">S/ 2,270.70</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="problema">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow-light">El problema</span>
+      <h2>Cada mes, la misma duda: ¿me pagaron bien?</h2>
+      <p>Casi nadie explica cómo se calcula tu sueldo cuando empiezas a trabajar — y menos aún cuando llega tu primera gratificación o tu CTS. Boleta Fiel existe para que dejes de adivinar.</p>
+    </div>
+    <div class="problem-grid scroll-mobile">
+      <div class="problem-card">
+        <div class="num mono">01</div>
+        <h3>Tu primer trabajo, sin manual de uso</h3>
+        <p>Nadie te enseña qué es la ONP, la AFP, la asignación familiar, ni por qué te descuentan lo que te descuentan.</p>
+      </div>
+      <div class="problem-card">
+        <div class="num mono">02</div>
+        <h3>Beneficios que no sabes si te tocan</h3>
+        <p>Gratificación, CTS, vacaciones: son derechos tuyos, pero calcularlos a mano — o confiar a ciegas en tu empleador — es difícil.</p>
+      </div>
+      <div class="problem-card">
+        <div class="num mono">03</div>
+        <h3>Dudas que cuestan caro</h3>
+        <p>Un descuento mal hecho o un beneficio mal calculado, si no lo revisas, se queda así — mes tras mes.</p>
+      </div>
+    </div>
+    <div class="scroll-hint"><span></span><span></span><span></span></div>
+  </div>
+</section>
+
+<section id="calendario" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow-light">Cómo funciona</span>
+      <h2>Un calendario, ocho herramientas</h2>
+      <p>El nombre no es casualidad: cada cálculo sigue exactamente lo que dice la ley, para que puedas confiar en tu boleta — la recibas o la hagas tú. Boleta Fiel sigue el ciclo real de la planilla peruana durante el año, mostrando cada cálculo justo cuando corresponde.</p>
+    </div>
+    <div class="timeline-wrap">
+      <div class="timeline-track">
+        <div class="tl-node"><div class="tl-dot">01</div><div class="tl-text"><div class="tl-month">Antes de empezar</div><div class="tl-label">Configuración</div><div class="tl-desc">Ingresas el sueldo base una vez; se usa en toda la app.</div></div></div>
+        <div class="tl-node"><div class="tl-dot">04</div><div class="tl-text"><div class="tl-month">Mayo</div><div class="tl-label">CTS · 1er depósito</div><div class="tl-desc">Periodo nov–abr, con proporción automática por fecha de ingreso.</div></div></div>
+        <div class="tl-node"><div class="tl-dot">03</div><div class="tl-text"><div class="tl-month">Julio</div><div class="tl-label">Gratificación · Fiestas Patrias</div><div class="tl-desc">Exonerada de AFP/ONP según Ley N° 30334, con bonificación incluida.</div></div></div>
+        <div class="tl-node"><div class="tl-dot">04</div><div class="tl-text"><div class="tl-month">Noviembre</div><div class="tl-label">CTS · 2do depósito</div><div class="tl-desc">Periodo may–oct, calculado con la misma lógica.</div></div></div>
+        <div class="tl-node"><div class="tl-dot">07</div><div class="tl-text"><div class="tl-month">Diciembre</div><div class="tl-label">Gratificación + Resumen anual</div><div class="tl-desc">Navidad, y la proyección de todo lo pagado en el año.</div></div></div>
+      </div>
+      <div class="timeline-footnote">
+        <span class="tf-chip">Todo el año · 02 Remuneración mensual</span>
+        <span class="tf-chip">Todo el año · 05 Vacaciones</span>
+        <span class="tf-chip">Al cese · 06 Liquidación de beneficios</span>
+        <span class="tf-chip">Cuando se necesite · 08 Módulo de practicantes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="calcula">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow-light">Qué calcula</span>
+      <h2>Todo lo que exige el régimen 728, en un solo lugar</h2>
+    </div>
+    <div class="calc-chips">
+      <div class="calc-chip"><span class="ok">✓</span>Remuneración mensual y horas extra (25/35/100%)</div>
+      <div class="calc-chip"><span class="ok">✓</span>AFP (4 fondos) y ONP</div>
+      <div class="calc-chip"><span class="ok">✓</span>Renta de 5ª categoría</div>
+      <div class="calc-chip"><span class="ok">✓</span>Gratificaciones Ley 27735 / 30334</div>
+      <div class="calc-chip"><span class="ok">✓</span>CTS con 1/6 de gratificación</div>
+      <div class="calc-chip"><span class="ok">✓</span>Vacaciones gozadas</div>
+      <div class="calc-chip"><span class="ok">✓</span>Liquidación de beneficios sociales</div>
+      <div class="calc-chip"><span class="ok">✓</span>Módulo de practicantes (Ley 28518)</div>
+    </div>
+  </div>
+</section>
+
+<section id="audiencia" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow-light">Para quién es</span>
+      <h2>Hecho para quien quiere estar seguro de su sueldo</h2>
+    </div>
+    <div class="audience-grid scroll-mobile">
+      <div class="audience-card">
+        <span class="tag">Trabajador de a pie</span>
+        <h3>Cualquier mes, cualquier duda</h3>
+        <p>Revisa si tu sueldo, tus descuentos y tus beneficios están calculados como manda la ley — sin depender de que alguien más te lo explique.</p>
+      </div>
+      <div class="audience-card">
+        <span class="tag">Practicante</span>
+        <h3>Recién empiezas tu carrera</h3>
+        <p>Comprueba tu subvención económica, tu seguro y tus días de descanso según la Ley N° 28518 — para que sepas si tu convenio de prácticas está en regla.</p>
+      </div>
+      <div class="audience-card">
+        <span class="tag">Contador o estudio contable</span>
+        <h3>Uno o varios RUC a tu cargo</h3>
+        <p>Verifica cálculos de tus clientes en minutos y exporta el detalle a PDF, sin depender de un Excel que solo tú entiendes.</p>
+      </div>
+      <div class="audience-card">
+        <span class="tag">Área de RR.HH.</span>
+        <h3>Pyme del régimen privado</h3>
+        <p>Simula liquidaciones y beneficios sociales antes de procesarlos en tu sistema principal.</p>
+      </div>
+    </div>
+    <div class="scroll-hint"><span></span><span></span><span></span><span></span></div>
+  </div>
+</section>
+
+<section id="comprar" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow-light">Cómo comprar</span>
+      <h2>Pago por Yape, en tres pasos</h2>
+      <p>Todo el proceso ocurre por WhatsApp. No necesitas tarjeta ni crear una cuenta.</p>
+    </div>
+    <div class="steps-grid scroll-mobile">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Escríbenos por WhatsApp</h3>
+        <p>Al tocar "Obtener acceso" se abre WhatsApp con un mensaje ya escrito, listo para enviar. Te respondemos con el número para yapear.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Yapea y envía tu captura</h3>
+        <p>Yapeas el monto exacto al número que te indicamos y nos mandas la captura de pantalla del pago por el mismo chat.</p>
+        <div class="yape-badge">📱 Pago con <b>Yape</b> · BCP</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Entra con tu WhatsApp</h3>
+        <p>Activamos tu número y listo: entras directo a la app desde tu navegador, usando tu propio WhatsApp como clave. Nada que descargar ni instalar.</p>
+      </div>
+    </div>
+    <div class="scroll-hint"><span></span><span></span><span></span></div>
+  </div>
+</section>
+
+<section id="precio">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow-light">Precio</span>
+      <h2>Un pago, acceso completo</h2>
+      <p>Sin suscripciones ni letra chica. Activamos tu acceso a tu número de WhatsApp y entras desde cualquier navegador, las veces que quieras.</p>
+    </div>
+    <div class="price-card">
+      <span class="badge">Pago único</span>
+      <h3>Boleta Fiel</h3>
+      <div class="price"><span class="amt">S/ 9.99</span><span class="per">pago único</span></div>
+      <p class="price-desc">Incluye actualización de tasas AFP, ONP, RMV y UIT durante 12 meses desde la compra.</p>
+      <ul class="price-list">
+        <li><span class="ck">✓</span>Las 8 calculadoras del régimen Ley 728</li>
+        <li><span class="ck">✓</span>Incluye el módulo de practicantes (Modalidades Formativas, Ley N° 28518)</li>
+        <li><span class="ck">✓</span>Exportación a PDF de cada cálculo</li>
+        <li><span class="ck">✓</span>Accede desde cualquier navegador, sin instalar nada</li>
+        <li><span class="ck">✓</span>Sin límite de trabajadores ni de cálculos</li>
+        <li><span class="ck">✓</span>Actualizaciones de tasas por 12 meses</li>
+      </ul>
+      <a href="#comprar" class="btn btn-terracota js-buy">Obtener mi acceso</a>
+      <div class="price-fine">Pago único por Yape. Activamos tu acceso por WhatsApp — entras con tu propio número, sin archivos que descargar.<br>Herramienta referencial: no sustituye asesoría legal, laboral ni tributaria profesional.</div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow-light">Preguntas frecuentes</span>
+      <h2>Antes de que preguntes</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>¿Reemplaza a mi contador o a mi sistema de planillas?</summary>
+        <p>No. Boleta Fiel es una herramienta de cálculo y verificación referencial. No presenta declaraciones ante SUNAT ni sustituye la asesoría de un contador colegiado o abogado laboralista para casos particulares.</p>
+      </details>
+      <details>
+        <summary>¿Cómo se actualizan las tasas de AFP, ONP y UIT?</summary>
+        <p>Las constantes legales están centralizadas en el archivo. Con la compra recibes actualizaciones durante 12 meses cada vez que cambien las tasas oficiales (SBS, SUNAT, MTPE).</p>
+      </details>
+      <details>
+        <summary>¿Necesito instalar algo?</summary>
+        <p>No. Entras directo desde el navegador de tu celular o computadora, usando tu WhatsApp como clave. No hay nada que instalar ni ningún archivo que descargar.</p>
+      </details>
+      <details>
+        <summary>¿Puedo usarlo para varios trabajadores?</summary>
+        <p>Sí, no hay límite de cálculos ni de trabajadores. Cada cálculo se hace de forma independiente dentro de la misma herramienta.</p>
+      </details>
+      <details>
+        <summary>Estoy en prácticas, no en planilla — ¿me sirve?</summary>
+        <p>Sí. El módulo de practicantes calcula tu subvención económica, la subvención adicional y tus días de descanso según la Ley N° 28518 (Modalidades Formativas Laborales), para que sepas si tu convenio de prácticas preprofesionales o profesionales está correcto.</p>
+      </details>
+      <details>
+        <summary>¿Qué pasa si encuentro un error en un cálculo?</summary>
+        <p>Escríbenos con el detalle del caso (fechas, montos, régimen) y lo revisamos. Toda cifra debe verificarse contra la fuente oficial antes de usarse en una planilla real.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta-final">
+      <h2>Deja de recalcular gratificaciones a mano</h2>
+      <p>Un pago, acceso inmediato, y el régimen 728 resuelto en una sola herramienta.</p>
+      <div class="hero-actions">
+        <a href="#comprar" class="btn btn-terracota js-buy">Obtener acceso — S/ 9.99</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="mobile-cta-bar" id="mobileCta">
+  <div class="mcb-price">S/ 9.99<small>Pago único · por Yape</small></div>
+  <a href="#comprar" class="btn btn-terracota js-buy">Comprar por WhatsApp</a>
+</div>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-brand">Boleta Fiel</div>
+    <div class="footer-legal">Herramienta referencial basada en la Ley N° 728, Ley N° 27735, Ley N° 30334, D.S. N° 001-97-TR, D.Leg. N° 713 y normas de EsSalud. No constituye asesoría legal, laboral ni tributaria. Verifica siempre las cifras vigentes en sbs.gob.pe, sunat.gob.pe y essalud.gob.pe.</div>
+  </div>
+</footer>
+
+<script>
+/* ===== Configuración de compra por WhatsApp =====
+   Reemplaza el número por el tuyo, en formato internacional sin '+' ni espacios:
+   Perú = 51 + número de 9 dígitos. Ejemplo real: 51987654321 */
+const WHATSAPP_NUMBER = '51927553845';
+const WHATSAPP_MENSAJE = 'Hola, quiero comprar *Boleta Fiel* (S/ 9.99, pago único). Confirmo que estoy de acuerdo con los términos del servicio.';
+
+function whatsappLink(){
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MENSAJE)}`;
+}
+document.querySelectorAll('.js-buy').forEach(a=>{ a.href = whatsappLink(); a.target = '_blank'; a.rel = 'noopener'; });
+
+/* Barra fija de compra en móvil: aparece al salir del hero */
+const mobileCta = document.getElementById('mobileCta');
+const heroEl = document.querySelector('.hero');
+if(mobileCta && heroEl && 'IntersectionObserver' in window){
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{ mobileCta.classList.toggle('show', !entry.isIntersecting); });
+  }, {threshold:0});
+  io.observe(heroEl);
+}
+</script>
+</body>
+</html>
