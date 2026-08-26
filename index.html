@@ -2,509 +2,1203 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boleta Fiel — ¿Tu sueldo está bien calculado? Compruébalo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Boleta Fiel · Calculadora Ley 728</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ==========================================================================
+   SISTEMA DE COLOR — Boleta Fiel (fintech/RRHH, contraste AA)
+   ========================================================================== */
 :root{
-  --navy-deep:#0F2A3D; --navy:#1E4B6B; --navy-dark:#123349;
-  --paper:#F5F7F9; --surface:#FFFFFF; --border:#DDE3E8;
+  --bg:#F5F7F9; --surface:#FFFFFF; --surface-alt:#EEF2F5; --border:#DDE3E8;
   --ink:#131B24; --ink-soft:#55606B; --ink-faint:#8994A0;
-  --ink-on-dark:#EAF1F6; --ink-on-dark-soft:#9FB4C4;
-  --terracota:#A85D28; --terracota-light:#C97A45;
-  --gold:#D4A24C;
-  --success:#3FBE83; --danger:#E8877A;
+  --primary:#1E4B6B; --primary-dark:#123349; --primary-tint:#E8EFF4;
+  --accent:#A85D28; --accent-tint:#F5E9DC;
+  --success:#1F7A4D; --success-tint:#E4F2E9;
+  --danger:#B3261E; --danger-tint:#FBEAE8;
+  --warning:#8A5A00; --warning-tint:#FBF0D9;
+  --info:#2B5F8A; --info-tint:#E7F0F7;
   --shadow:0 1px 2px rgba(19,27,36,.06), 0 1px 0 rgba(19,27,36,.04);
-  --radius:10px;
+  --radius:8px;
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
-img,svg{display:block;max-width:100%;}
-.container{max-width:1120px;margin:0 auto;padding:0 22px;}
-h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;margin:0;letter-spacing:-0.015em;}
-p{margin:0;line-height:1.6;}
-a{color:inherit;}
-.mono{font-family:'IBM Plex Mono',monospace;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 20px 70px;display:none;}
 
-/* ---------- NAV ---------- */
-nav.topbar{position:sticky;top:0;z-index:50;background:rgba(245,247,249,0.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
-.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;}
-.brand{display:flex;align-items:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:17px;}
-.brand .coin{width:32px;height:32px;border-radius:8px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;}
-.navlinks{display:flex;gap:26px;font-size:14px;font-weight:600;color:var(--ink-soft);}
-.navlinks a{text-decoration:none;transition:color .15s;}
-.navlinks a:hover{color:var(--navy);}
-.btn{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;border-radius:8px;border:1px solid transparent;padding:11px 20px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:all .15s ease;}
-.btn-terracota{background:var(--terracota);color:#fff;}
-.btn-terracota:hover{background:#8F4C1F;}
-.btn-ghost-dark{background:rgba(255,255,255,0.08);color:var(--ink-on-dark);border-color:rgba(255,255,255,0.25);}
-.btn-ghost-dark:hover{background:rgba(255,255,255,0.16);}
-.btn-outline{border-color:var(--border);color:var(--ink);background:var(--surface);}
-.btn-outline:hover{border-color:var(--navy);color:var(--navy);}
-.nav-cta{display:none;}
-@media(min-width:720px){.nav-cta{display:inline-flex;}}
-@media(max-width:720px){.navlinks{display:none;}}
+header.app{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid var(--border);}
+.brand-mark{display:flex;align-items:center;gap:13px;}
+.coin{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:16px;background:var(--primary);color:#fff;flex-shrink:0;letter-spacing:-0.02em;}
+h1{font-family:'Inter',sans-serif;font-weight:700;font-size:26px;margin:0;letter-spacing:-0.01em;color:var(--ink);}
+.subtitle{font-size:12.5px;color:var(--ink-soft);margin-top:2px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;}
+.header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.btn{font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--ink);padding:9px 14px;cursor:pointer;transition:all .15s ease;display:inline-flex;align-items:center;gap:7px;}
+.btn:hover{border-color:var(--primary);color:var(--primary);}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-dark);color:#fff;}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn-accent:hover{background:#8A4A20;color:#fff;}
+.btn-ghost{background:var(--surface-alt);border-color:transparent;font-size:12px;padding:7px 11px;}
 
-/* Tap targets & full-width buttons on small phones */
-@media(max-width:480px){
-  .btn{min-height:48px;font-size:14.5px;}
-  .hero-actions .btn, .cta-final .hero-actions .btn{width:100%;justify-content:center;}
-  .hero-actions{flex-direction:column;}
+.layout{display:grid;grid-template-columns:210px 1fr;gap:24px;align-items:start;}
+nav.folios{position:sticky;top:20px;}
+.folio-btn{display:flex;align-items:baseline;gap:9px;width:100%;text-align:left;background:transparent;border:none;border-left:3px solid transparent;padding:10px 12px;cursor:pointer;border-radius:0 6px 6px 0;font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink-soft);transition:all .15s ease;}
+.folio-btn .num{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:10.5px;color:var(--accent);flex-shrink:0;}
+.folio-btn:hover{background:var(--surface-alt);color:var(--ink);}
+.folio-btn.active{background:var(--surface);border-left:3px solid var(--primary);color:var(--primary);font-weight:600;box-shadow:var(--shadow);}
+
+.panel{display:none;}
+.panel.active{display:block;animation:fade .2s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(3px);}to{opacity:1;transform:translateY(0);}}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-bottom:16px;box-shadow:var(--shadow);}
+.card h2{font-family:'Inter',sans-serif;font-weight:700;font-size:18px;margin:0 0 4px;color:var(--ink);}
+.card .desc{color:var(--ink-soft);font-size:13.5px;margin:0 0 16px;line-height:1.5;}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;}
+.grid.g3{grid-template-columns:1fr 1fr 1fr;}
+@media (max-width:700px){ .grid, .grid.g3{grid-template-columns:1fr;} }
+
+.field{display:flex;flex-direction:column;gap:5px;position:relative;}
+.field label{font-size:12.5px;color:var(--ink-soft);font-weight:600;letter-spacing:0.005em;}
+.field .hint{font-size:11px;color:var(--ink-faint);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;}
+input[type=number], input[type=text], input[type=date], select{
+  font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:14.5px;border:1px solid var(--border);border-radius:6px;
+  padding:9px 10px;background:var(--bg);color:var(--ink);outline:none;transition:border-color .15s, background .15s;width:100%;
+}
+input:focus, select:focus{border-color:var(--primary);background:var(--surface);}
+select{font-family:'Inter',sans-serif;}
+input::placeholder{color:var(--ink-faint);opacity:.6;}
+input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+input[type=number]{-moz-appearance:textfield;appearance:textfield;}
+
+.inline-warn{font-size:11px;color:var(--warning);background:var(--warning-tint);border-radius:5px;padding:5px 8px;margin-top:2px;}
+.checkrow{display:flex;align-items:center;gap:8px;padding:8px 0;}
+.checkrow input{width:16px;height:16px;accent-color:var(--primary);}
+.checkrow label{font-size:13.5px;color:var(--ink);}
+.divider{border:none;border-top:1px solid var(--border);margin:18px 0;}
+
+/* ============ CUADROS DE OPCIONES (reemplazan <select> en decisiones clave) ============ */
+.option-cards{display:flex;gap:10px;flex-wrap:wrap;}
+.option-card{
+  flex:1;min-width:150px;text-align:left;cursor:pointer;
+  background:var(--surface);border:1.5px solid var(--border);border-radius:10px;
+  padding:12px 14px;transition:all .15s ease;
+}
+.option-card:hover{border-color:var(--primary);}
+.option-card.active{border-color:var(--primary);background:var(--primary-tint);box-shadow:0 0 0 1px var(--primary);}
+.option-card .oc-title{font-size:13.5px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.option-card .oc-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;position:relative;}
+.option-card.active .oc-radio{border-color:var(--primary);}
+.option-card.active .oc-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--primary);}
+.option-card .oc-sub{font-size:11.5px;color:var(--ink-soft);margin-top:3px;padding-left:24px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;}
+
+/* ============ BARRAS ESTADÍSTICAS FINAS ============ */
+.stat-bar-wrap{margin-top:12px;}
+.stat-bar-label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-soft);margin-bottom:5px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;}
+.stat-bar{height:6px;border-radius:4px;background:var(--surface-alt);overflow:hidden;border:1px solid var(--border);}
+.stat-bar-fill{height:100%;border-radius:4px;background:var(--primary);transition:width .3s ease;}
+.stat-bar-fill.accent{background:var(--accent);}
+.stat-bar-fill.success{background:var(--success);}
+
+table.ledger{width:100%;border-collapse:collapse;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:13.5px;}
+.ledger tr{border-bottom:1px solid var(--surface-alt);}
+.ledger td{padding:7px 4px;}
+.ledger td:last-child{text-align:right;font-weight:600;}
+.ledger tr.total td{border-top:2px solid var(--ink);border-bottom:none;font-weight:700;font-size:15px;padding-top:10px;color:var(--primary);}
+.ledger tr.sub td{color:var(--ink-soft);font-size:12px;padding-left:14px;font-weight:400;}
+.ledger tr.sub td:last-child{font-weight:500;}
+.tag-add td:last-child{color:var(--success);}
+.tag-sub td:last-child{color:var(--danger);}
+
+.section-label{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:10.5px;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);margin:0 0 8px;}
+.note-box{background:var(--info-tint);border-left:3px solid var(--info);padding:11px 13px;font-size:12.5px;color:var(--ink-soft);border-radius:0 6px 6px 0;margin-top:12px;line-height:1.55;}
+.note-box.warn{background:var(--warning-tint);border-left-color:var(--warning);}
+.note-box.danger{background:var(--danger-tint);border-left-color:var(--danger);}
+.note-box b{color:var(--ink);}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.badge{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:10.5px;padding:4px 9px;border:1px solid var(--border);border-radius:20px;color:var(--ink-soft);background:var(--surface-alt);}
+.badge a{color:var(--primary);text-decoration:none;font-weight:600;cursor:pointer;}
+
+.base-banner{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--primary-tint);border:1px solid var(--border);border-radius:6px;padding:11px 14px;margin-bottom:16px;}
+.base-banner .k{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.04em;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;}
+.base-banner .v{font-family:'Inter',sans-serif;font-weight:700;font-size:18px;color:var(--primary);}
+.base-banner a{font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none;}
+
+.footer-note{margin-top:28px;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--ink-faint);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;line-height:1.7;}
+
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+@media (max-width:880px){.summary-grid{grid-template-columns:1fr 1fr;}}
+.stat-card{background:var(--surface);border:1px solid var(--border);padding:15px 17px;border-radius:var(--radius);}
+.stat-card .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;}
+.stat-card .val{font-family:'Inter',sans-serif;font-size:21px;font-weight:700;margin-top:6px;color:var(--primary);}
+.stat-card .sub{font-size:11px;color:var(--ink-soft);margin-top:4px;}
+
+.segmented{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.seg-btn{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface-alt);color:var(--ink-soft);cursor:pointer;transition:all .15s;}
+.seg-btn.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+.subpanel{display:none;}
+.subpanel.active{display:block;animation:fade .2s ease;}
+
+@media (max-width:880px){
+  .wrap{padding:16px 14px 60px;}
+  header.app{flex-direction:column;}
+  .layout{grid-template-columns:1fr;gap:14px;}
+  nav.folios{position:static;display:flex;overflow-x:auto;gap:6px;padding:2px 2px 10px;margin-bottom:4px;-webkit-overflow-scrolling:touch;}
+  .folio-btn{flex:0 0 auto;white-space:nowrap;border-left:none;border-bottom:3px solid transparent;border-radius:20px;background:var(--surface-alt);padding:8px 13px;}
+  .folio-btn.active{border-left:none;border-bottom:3px solid var(--primary);background:var(--primary-tint);}
+  .card{padding:17px 16px;}
+  h1{font-size:21px;}
+  .card h2{font-size:16.5px;}
+  table.ledger{font-size:12.5px;}
+  .summary-grid{grid-template-columns:1fr 1fr;}
+}
+@media print{
+  body{background:#fff;}
+  nav.folios, .header-actions, .footer-note, .btn, .segmented{display:none !important;}
+  .layout{grid-template-columns:1fr;}
+  .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
+  header.app{border-bottom:2px solid #000;}
 }
 
-/* Densidad general en móvil: menos aire entre secciones, texto más compacto */
-@media(max-width:820px){
-  section{padding:40px 0;}
-  .section-head{margin-bottom:26px;}
-  .section-head p{font-size:14px;}
-  .card, .problem-card, .step-card{padding:20px;}
-  .audience-card{padding:22px;}
+/* ============ AUTENTICACIÓN Y SUSCRIPCIÓN ============ */
+#authScreen, #subscribeScreen{
+  position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;
+  display:flex;align-items:center;justify-content:center;padding:20px;
 }
-
-/* ---------- MOBILE STICKY CTA (comprar por WhatsApp) ---------- */
-.mobile-cta-bar{
-  position:fixed;left:0;right:0;bottom:0;z-index:70;
-  display:none;align-items:center;justify-content:space-between;gap:12px;
-  background:var(--surface);border-top:1px solid var(--border);
-  padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-  box-shadow:0 -6px 20px rgba(19,27,36,0.1);
-  transform:translateY(100%);transition:transform .25s ease;
+.auth-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:34px 30px;max-width:380px;width:100%;box-shadow:0 20px 50px rgba(19,27,36,0.12);
 }
-.mobile-cta-bar.show{transform:translateY(0);}
-.mobile-cta-bar .mcb-price{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;color:var(--ink);line-height:1.15;}
-.mobile-cta-bar .mcb-price small{display:block;font-family:'Inter',sans-serif;font-weight:500;font-size:10.5px;color:var(--ink-faint);}
-.mobile-cta-bar .btn{padding:12px 18px;font-size:13.5px;white-space:nowrap;}
-@media(max-width:720px){
-  .mobile-cta-bar{display:flex;}
-  body{padding-bottom:78px;}
+.auth-card.wide{max-width:460px;}
+.auth-card .lock-coin{
+  width:48px;height:48px;border-radius:12px;background:var(--primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+  font-weight:800;font-size:17px;
 }
-
-/* ---------- HERO ---------- */
-.hero{background:radial-gradient(1100px 500px at 15% -10%, #16394F 0%, var(--navy-deep) 55%);color:var(--ink-on-dark);padding:74px 0 90px;position:relative;overflow:hidden;}
-.hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:52px;align-items:center;}
-@media(max-width:880px){.hero-grid{grid-template-columns:1fr;} .hero{padding:52px 0 60px;}}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);background:rgba(212,162,76,0.12);border:1px solid rgba(212,162,76,0.3);padding:6px 12px;border-radius:20px;margin-bottom:20px;}
-.hero h1{font-size:44px;line-height:1.12;color:#fff;}
-@media(max-width:600px){.hero h1{font-size:32px;}}
-.hero h1 em{font-style:normal;color:var(--gold);}
-.hero p.lead{margin-top:18px;font-size:17px;color:var(--ink-on-dark-soft);max-width:520px;line-height:1.6;}
-.hero-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;}
-.hero-badges{display:flex;gap:18px;margin-top:34px;flex-wrap:wrap;}
-.hero-badge{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-on-dark-soft);}
-.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--success);}
-
-/* Mini boleta mock (support element, quiet) */
-.mock{background:var(--surface);border-radius:14px;padding:22px 22px 0;box-shadow:0 24px 60px rgba(0,0,0,0.35);transform:rotate(-1.2deg);}
-.mock-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--border);}
-.mock-head .t1{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:var(--ink);}
-.mock-head .t2{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-faint);}
-.mock-row{display:flex;justify-content:space-between;padding:9px 0;font-family:'IBM Plex Mono',monospace;font-size:13px;border-bottom:1px dashed var(--border);color:var(--ink-soft);}
-.mock-row b{color:var(--ink);font-weight:600;}
-.mock-row.add span:last-child{color:#1F7A4D;}
-.mock-row.sub span:last-child{color:#B3261E;}
-.mock-net{margin:0 -22px;padding:16px 22px;background:var(--navy);color:#fff;border-radius:0 0 14px 14px;display:flex;justify-content:space-between;align-items:baseline;}
-.mock-net .l{font-size:11.5px;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;opacity:.85;}
-.mock-net .v{font-family:'Plus Jakarta Sans',sans-serif;font-size:23px;font-weight:800;}
-
-/* ---------- SECTIONS GENERIC ---------- */
-section{padding:76px 0;}
-@media(max-width:700px){section{padding:52px 0;}}
-.section-head{max-width:640px;margin:0 auto 42px;text-align:center;}
-.eyebrow-light{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--terracota);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;display:block;}
-.section-head h2{font-size:30px;}
-@media(max-width:600px){.section-head h2{font-size:24px;}}
-.section-head p{margin-top:12px;color:var(--ink-soft);font-size:15.5px;}
-
-/* ---------- PROBLEMA ---------- */
-.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-@media(max-width:820px){.problem-grid{grid-template-columns:1fr;}}
-.problem-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
-.problem-card .num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--terracota);margin-bottom:10px;}
-.problem-card h3{font-size:16.5px;margin-bottom:8px;}
-.problem-card p{font-size:14px;color:var(--ink-soft);}
-
-/* ---------- TIMELINE (signature element) ---------- */
-.timeline-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:38px 30px 30px;box-shadow:var(--shadow);}
-.timeline-track{position:relative;display:flex;justify-content:space-between;gap:8px;padding-top:6px;}
-.timeline-track::before{content:'';position:absolute;top:15px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--border),var(--gold),var(--border));}
-.tl-node{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
-.tl-dot{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;border:4px solid var(--surface);z-index:2;box-shadow:0 0 0 1px var(--border);}
-.tl-month{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--terracota);margin-top:10px;text-transform:uppercase;letter-spacing:0.04em;}
-.tl-label{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13.5px;margin-top:4px;padding:0 4px;}
-.tl-desc{font-size:12px;color:var(--ink-soft);margin-top:5px;padding:0 6px;line-height:1.45;}
-@media(max-width:880px){
-  .timeline-wrap{padding:26px 18px 22px;}
-  .timeline-track{flex-direction:column;gap:20px;align-items:flex-start;}
-  .timeline-track::before{top:0;bottom:0;left:15px;right:auto;width:2px;height:auto;background:linear-gradient(180deg,var(--border),var(--gold),var(--border));}
-  .tl-node{flex-direction:row;text-align:left;align-items:flex-start;gap:14px;width:100%;}
-  .tl-month,.tl-label,.tl-desc{margin-top:0;padding:0;}
-  .tl-text{display:flex;flex-direction:column;gap:2px;}
-  .tl-desc{display:none;} /* en móvil basta mes + etiqueta; el detalle se ve al comprar */
-  .timeline-footnote{margin-top:22px;padding-top:18px;}
+.auth-card h2{font-weight:700;font-size:18px;margin:0 0 6px;text-align:center;}
+.auth-card > p{font-size:13px;color:var(--ink-soft);margin:0 0 18px;line-height:1.5;text-align:center;}
+.auth-card .lock-error{font-size:12px;color:var(--danger);min-height:16px;margin:8px 0;text-align:center;}
+.auth-card .lock-ok{font-size:12px;color:var(--success);min-height:16px;margin:8px 0;text-align:center;}
+.auth-card button.btn{width:100%;margin-top:6px;}
+.auth-switch{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:16px;}
+.auth-switch a{color:var(--primary);font-weight:600;cursor:pointer;text-decoration:underline;}
+.sub-price-box{
+  background:var(--primary-tint);border:1px solid var(--border);border-radius:10px;
+  padding:16px;text-align:center;margin-bottom:18px;
 }
-.timeline-footnote{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:32px;padding-top:24px;border-top:1px dashed var(--border);}
-.tf-chip{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:6px 12px;}
-
-/* ---------- AUDIENCIA ---------- */
-.audience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;}
-.audience-card{background:var(--navy-deep);color:var(--ink-on-dark);border-radius:var(--radius);padding:26px;}
-.audience-card h3{font-size:17px;color:#fff;margin-bottom:10px;}
-.audience-card p{font-size:13.5px;color:var(--ink-on-dark-soft);}
-.audience-card .tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--gold);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em;}
-
-/* ---------- CARRUSEL HORIZONTAL EN MÓVIL (problema, audiencia, pasos) ----------
-   En vez de apilar tarjetas verticalmente (mucho scroll), en móvil se deslizan
-   horizontalmente — patrón más liviano y habitual en apps. */
-@media(max-width:820px){
-  .scroll-mobile{
-    display:flex !important; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory;
-    margin:0 -20px; padding:4px 20px 14px; -webkit-overflow-scrolling:touch;
-  }
-  .scroll-mobile::-webkit-scrollbar{display:none;}
-  .scroll-mobile > *{flex:0 0 82%; scroll-snap-align:start;}
-  .scroll-hint{display:flex;justify-content:center;gap:6px;margin-top:2px;}
-  .scroll-hint span{width:5px;height:5px;border-radius:50%;background:var(--border);}
+.sub-price-box .amt{font-size:32px;font-weight:800;color:var(--primary);}
+.sub-price-box .per{font-size:12.5px;color:var(--ink-soft);}
+.yape-box{
+  background:var(--surface-alt);border:1px dashed var(--border);border-radius:10px;
+  padding:16px;margin-bottom:18px;text-align:center;
 }
-@media(min-width:821px){ .scroll-hint{display:none;} }
-
-/* ---------- QUÉ CALCULA (chips) ---------- */
-.calc-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:820px;margin:0 auto;}
-.calc-chip{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px;}
-.calc-chip .ok{color:var(--navy);font-weight:800;}
-
-/* ---------- COMO COMPRAR (Yape + WhatsApp) ---------- */
-.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-@media(max-width:820px){.steps-grid{grid-template-columns:1fr;}}
-.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);position:relative;}
-.step-card .step-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;margin-bottom:14px;}
-.step-card h3{font-size:15.5px;margin-bottom:8px;}
-.step-card p{font-size:13.5px;color:var(--ink-soft);}
-.step-connector{display:none;}
-@media(min-width:821px){
-  .steps-grid{position:relative;}
-  .steps-grid::before{content:'';position:absolute;top:15px;left:16.6%;right:16.6%;height:2px;background:var(--border);z-index:0;}
+.yape-qr{
+  width:120px;height:120px;margin:0 auto 10px;background:repeating-conic-gradient(var(--ink) 0% 25%, var(--surface) 0% 50%) 50% / 14px 14px;
+  border-radius:8px;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--border);
 }
-.yape-badge{display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--navy);background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:5px 11px;margin-top:10px;}
-.yape-badge b{color:var(--terracota);}
-/* ---------- PRECIO ---------- */
-.price-card{max-width:460px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:34px 32px;box-shadow:0 20px 50px rgba(19,27,36,0.08);position:relative;}
-.price-card .badge{position:absolute;top:-13px;left:32px;background:var(--terracota);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 12px;border-radius:20px;letter-spacing:0.03em;}
-.price-card h3{font-size:18px;margin-bottom:6px;}
-.price-card .price{display:flex;align-items:baseline;gap:8px;margin:18px 0 6px;}
-.price-card .price .amt{font-family:'Plus Jakarta Sans',sans-serif;font-size:44px;font-weight:800;color:var(--navy);}
-.price-card .price .per{font-size:13px;color:var(--ink-faint);}
-.price-card .price-desc{font-size:13px;color:var(--ink-soft);margin-bottom:22px;}
-.price-list{list-style:none;padding:0;margin:0 0 26px;display:flex;flex-direction:column;gap:11px;}
-.price-list li{display:flex;gap:10px;font-size:14px;color:var(--ink);}
-.price-list li .ck{color:var(--navy);font-weight:800;flex-shrink:0;}
-.price-card .btn{width:100%;justify-content:center;padding:13px;font-size:14.5px;}
-.price-fine{font-size:11.5px;color:var(--ink-faint);text-align:center;margin-top:14px;}
-
-/* ---------- FAQ ---------- */
-.faq{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:10px;}
-details{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px 4px;}
-summary{cursor:pointer;list-style:none;padding:16px 18px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;}
-summary::-webkit-details-marker{display:none;}
-summary::after{content:'+';font-size:20px;color:var(--terracota);font-weight:400;}
-details[open] summary::after{content:'−';}
-details p{padding:0 18px 16px;font-size:13.5px;color:var(--ink-soft);line-height:1.6;}
-
-/* ---------- CTA FINAL ---------- */
-.cta-final{background:var(--navy-deep);color:var(--ink-on-dark);border-radius:20px;padding:52px 40px;text-align:center;}
-.cta-final h2{color:#fff;font-size:28px;}
-.cta-final p{color:var(--ink-on-dark-soft);margin-top:10px;max-width:480px;margin-left:auto;margin-right:auto;}
-.cta-final .hero-actions{justify-content:center;margin-top:26px;}
-
-/* ---------- FOOTER ---------- */
-footer{border-top:1px solid var(--border);padding:34px 0;}
-.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
-.footer-legal{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-faint);max-width:640px;line-height:1.6;}
-.footer-brand{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:var(--ink-soft);}
+.yape-number{font-weight:800;font-size:20px;color:var(--ink);letter-spacing:0.03em;}
+.yape-name{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+.sub-status-badge{
+  display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;
+  padding:5px 11px;border-radius:20px;
+}
+.sub-status-badge.ok{background:var(--success-tint);color:var(--success);}
+.sub-status-badge.warn{background:var(--warning-tint);color:var(--warning);}
+.header-sub-info{display:flex;align-items:center;gap:10px;}
 </style>
 </head>
 <body>
 
-<nav class="topbar">
-  <div class="container topbar-inner">
-    <div class="brand"><div class="coin">BF</div>Boleta Fiel</div>
-    <div class="navlinks">
-      <a href="#calendario">Cómo funciona</a>
-      <a href="#comprar">Cómo comprar</a>
-      <a href="#precio">Precio</a>
-      <a href="#faq">Preguntas</a>
+<div id="authScreen">
+  <div class="auth-card">
+    <div class="lock-coin">BF</div>
+    <h2 id="authTitle">Ingresa a tu cuenta</h2>
+    <p>Boleta Fiel — calculadora del régimen laboral peruano.</p>
+    <div class="field" style="margin-bottom:12px;">
+      <label>Correo electrónico</label>
+      <input type="email" id="authEmail" placeholder="tucorreo@ejemplo.com" autocomplete="email">
     </div>
-    <a href="#comprar" class="btn btn-outline nav-cta js-buy">Comprar</a>
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="authPassword" placeholder="Mínimo 6 caracteres" autocomplete="current-password">
+    </div>
+    <div class="lock-error" id="authError"></div>
+    <div class="lock-ok" id="authOk"></div>
+    <button class="btn btn-primary" id="authSubmitBtn" onclick="intentarLogin()">Ingresar</button>
+    <div class="auth-switch" id="authSwitch">¿No tienes cuenta? <a onclick="cambiarModoAuth()">Regístrate aquí</a></div>
   </div>
-</nav>
-
-<header class="hero">
-  <div class="container hero-grid">
-    <div>
-      <span class="eyebrow">● Para trabajadores del régimen privado — Ley N° 728</span>
-      <h1>Fiel a la ley,<br><em>fiel a tu bolsillo.</em></h1>
-      <p class="lead">Boleta Fiel te ayuda a comprobar si tu sueldo, gratificación, CTS y vacaciones están bien calculados — sea tu primer trabajo o el número quince. También la usan contadores y áreas de RR.HH. para procesar planillas completas.</p>
-      <div class="hero-actions">
-        <a href="#comprar" class="btn btn-terracota js-buy">Obtener acceso →</a>
-        <a href="#calendario" class="btn btn-ghost-dark">Ver cómo funciona</a>
-      </div>
-      <div class="hero-badges">
-        <div class="hero-badge"><span class="dot"></span>Ley N° 728 y normas conexas</div>
-        <div class="hero-badge"><span class="dot"></span>Tasas SBS ago-2026</div>
-        <div class="hero-badge"><span class="dot"></span>Pago por Yape</div>
-      </div>
-    </div>
-    <div class="mock">
-      <div class="mock-head"><div class="t1">Detalle del cálculo</div><div class="t2">AGO 2026</div></div>
-      <div class="mock-row add"><span>Remuneración básica</span><b>S/ 2,500.00</b></div>
-      <div class="mock-row add"><span>Asignación familiar</span><b>S/ 113.00</b></div>
-      <div class="mock-row sub"><span>Aporte AFP + prima + comisión</span><b>-S/ 342.30</b></div>
-      <div class="mock-row sub"><span>Renta de quinta</span><b>-S/ 0.00</b></div>
-      <div class="mock-net"><span class="l">Neto a pagar</span><span class="v">S/ 2,270.70</span></div>
-    </div>
-  </div>
-</header>
-
-<section id="problema">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow-light">El problema</span>
-      <h2>Cada mes, la misma duda: ¿me pagaron bien?</h2>
-      <p>Casi nadie explica cómo se calcula tu sueldo cuando empiezas a trabajar — y menos aún cuando llega tu primera gratificación o tu CTS. Boleta Fiel existe para que dejes de adivinar.</p>
-    </div>
-    <div class="problem-grid scroll-mobile">
-      <div class="problem-card">
-        <div class="num mono">01</div>
-        <h3>Tu primer trabajo, sin manual de uso</h3>
-        <p>Nadie te enseña qué es la ONP, la AFP, la asignación familiar, ni por qué te descuentan lo que te descuentan.</p>
-      </div>
-      <div class="problem-card">
-        <div class="num mono">02</div>
-        <h3>Beneficios que no sabes si te tocan</h3>
-        <p>Gratificación, CTS, vacaciones: son derechos tuyos, pero calcularlos a mano — o confiar a ciegas en tu empleador — es difícil.</p>
-      </div>
-      <div class="problem-card">
-        <div class="num mono">03</div>
-        <h3>Dudas que cuestan caro</h3>
-        <p>Un descuento mal hecho o un beneficio mal calculado, si no lo revisas, se queda así — mes tras mes.</p>
-      </div>
-    </div>
-    <div class="scroll-hint"><span></span><span></span><span></span></div>
-  </div>
-</section>
-
-<section id="calendario" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow-light">Cómo funciona</span>
-      <h2>Un calendario, ocho herramientas</h2>
-      <p>El nombre no es casualidad: cada cálculo sigue exactamente lo que dice la ley, para que puedas confiar en tu boleta — la recibas o la hagas tú. Boleta Fiel sigue el ciclo real de la planilla peruana durante el año, mostrando cada cálculo justo cuando corresponde.</p>
-    </div>
-    <div class="timeline-wrap">
-      <div class="timeline-track">
-        <div class="tl-node"><div class="tl-dot">01</div><div class="tl-text"><div class="tl-month">Antes de empezar</div><div class="tl-label">Configuración</div><div class="tl-desc">Ingresas el sueldo base una vez; se usa en toda la app.</div></div></div>
-        <div class="tl-node"><div class="tl-dot">04</div><div class="tl-text"><div class="tl-month">Mayo</div><div class="tl-label">CTS · 1er depósito</div><div class="tl-desc">Periodo nov–abr, con proporción automática por fecha de ingreso.</div></div></div>
-        <div class="tl-node"><div class="tl-dot">03</div><div class="tl-text"><div class="tl-month">Julio</div><div class="tl-label">Gratificación · Fiestas Patrias</div><div class="tl-desc">Exonerada de AFP/ONP según Ley N° 30334, con bonificación incluida.</div></div></div>
-        <div class="tl-node"><div class="tl-dot">04</div><div class="tl-text"><div class="tl-month">Noviembre</div><div class="tl-label">CTS · 2do depósito</div><div class="tl-desc">Periodo may–oct, calculado con la misma lógica.</div></div></div>
-        <div class="tl-node"><div class="tl-dot">07</div><div class="tl-text"><div class="tl-month">Diciembre</div><div class="tl-label">Gratificación + Resumen anual</div><div class="tl-desc">Navidad, y la proyección de todo lo pagado en el año.</div></div></div>
-      </div>
-      <div class="timeline-footnote">
-        <span class="tf-chip">Todo el año · 02 Remuneración mensual</span>
-        <span class="tf-chip">Todo el año · 05 Vacaciones</span>
-        <span class="tf-chip">Al cese · 06 Liquidación de beneficios</span>
-        <span class="tf-chip">Cuando se necesite · 08 Módulo de practicantes</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="calcula">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow-light">Qué calcula</span>
-      <h2>Todo lo que exige el régimen 728, en un solo lugar</h2>
-    </div>
-    <div class="calc-chips">
-      <div class="calc-chip"><span class="ok">✓</span>Remuneración mensual y horas extra (25/35/100%)</div>
-      <div class="calc-chip"><span class="ok">✓</span>AFP (4 fondos) y ONP</div>
-      <div class="calc-chip"><span class="ok">✓</span>Renta de 5ª categoría</div>
-      <div class="calc-chip"><span class="ok">✓</span>Gratificaciones Ley 27735 / 30334</div>
-      <div class="calc-chip"><span class="ok">✓</span>CTS con 1/6 de gratificación</div>
-      <div class="calc-chip"><span class="ok">✓</span>Vacaciones gozadas</div>
-      <div class="calc-chip"><span class="ok">✓</span>Liquidación de beneficios sociales</div>
-      <div class="calc-chip"><span class="ok">✓</span>Módulo de practicantes (Ley 28518)</div>
-    </div>
-  </div>
-</section>
-
-<section id="audiencia" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow-light">Para quién es</span>
-      <h2>Hecho para quien quiere estar seguro de su sueldo</h2>
-    </div>
-    <div class="audience-grid scroll-mobile">
-      <div class="audience-card">
-        <span class="tag">Trabajador de a pie</span>
-        <h3>Cualquier mes, cualquier duda</h3>
-        <p>Revisa si tu sueldo, tus descuentos y tus beneficios están calculados como manda la ley — sin depender de que alguien más te lo explique.</p>
-      </div>
-      <div class="audience-card">
-        <span class="tag">Practicante</span>
-        <h3>Recién empiezas tu carrera</h3>
-        <p>Comprueba tu subvención económica, tu seguro y tus días de descanso según la Ley N° 28518 — para que sepas si tu convenio de prácticas está en regla.</p>
-      </div>
-      <div class="audience-card">
-        <span class="tag">Contador o estudio contable</span>
-        <h3>Uno o varios RUC a tu cargo</h3>
-        <p>Verifica cálculos de tus clientes en minutos y exporta el detalle a PDF, sin depender de un Excel que solo tú entiendes.</p>
-      </div>
-      <div class="audience-card">
-        <span class="tag">Área de RR.HH.</span>
-        <h3>Pyme del régimen privado</h3>
-        <p>Simula liquidaciones y beneficios sociales antes de procesarlos en tu sistema principal.</p>
-      </div>
-    </div>
-    <div class="scroll-hint"><span></span><span></span><span></span><span></span></div>
-  </div>
-</section>
-
-<section id="comprar" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow-light">Cómo comprar</span>
-      <h2>Pago por Yape, en tres pasos</h2>
-      <p>Todo el proceso ocurre por WhatsApp. No necesitas tarjeta ni crear una cuenta.</p>
-    </div>
-    <div class="steps-grid scroll-mobile">
-      <div class="step-card">
-        <div class="step-num">1</div>
-        <h3>Escríbenos por WhatsApp</h3>
-        <p>Al tocar "Obtener acceso" se abre WhatsApp con un mensaje ya escrito, listo para enviar. Te respondemos con el número para yapear.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">2</div>
-        <h3>Yapea y envía tu captura</h3>
-        <p>Yapeas el monto exacto al número que te indicamos y nos mandas la captura de pantalla del pago por el mismo chat.</p>
-        <div class="yape-badge">📱 Pago con <b>Yape</b> · BCP</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num">3</div>
-        <h3>Entra con tu WhatsApp</h3>
-        <p>Activamos tu número y listo: entras directo a la app desde tu navegador, usando tu propio WhatsApp como clave. Nada que descargar ni instalar.</p>
-      </div>
-    </div>
-    <div class="scroll-hint"><span></span><span></span><span></span></div>
-  </div>
-</section>
-
-<section id="precio">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow-light">Precio</span>
-      <h2>Un pago, acceso completo</h2>
-      <p>Sin suscripciones ni letra chica. Activamos tu acceso a tu número de WhatsApp y entras desde cualquier navegador, las veces que quieras.</p>
-    </div>
-    <div class="price-card">
-      <span class="badge">Pago único</span>
-      <h3>Boleta Fiel</h3>
-      <div class="price"><span class="amt">S/ 9.99</span><span class="per">pago único</span></div>
-      <p class="price-desc">Incluye actualización de tasas AFP, ONP, RMV y UIT durante 12 meses desde la compra.</p>
-      <ul class="price-list">
-        <li><span class="ck">✓</span>Las 8 calculadoras del régimen Ley 728</li>
-        <li><span class="ck">✓</span>Incluye el módulo de practicantes (Modalidades Formativas, Ley N° 28518)</li>
-        <li><span class="ck">✓</span>Exportación a PDF de cada cálculo</li>
-        <li><span class="ck">✓</span>Accede desde cualquier navegador, sin instalar nada</li>
-        <li><span class="ck">✓</span>Sin límite de trabajadores ni de cálculos</li>
-        <li><span class="ck">✓</span>Actualizaciones de tasas por 12 meses</li>
-      </ul>
-      <a href="#comprar" class="btn btn-terracota js-buy">Obtener mi acceso</a>
-      <div class="price-fine">Pago único por Yape. Activamos tu acceso por WhatsApp — entras con tu propio número, sin archivos que descargar.<br>Herramienta referencial: no sustituye asesoría legal, laboral ni tributaria profesional.</div>
-    </div>
-  </div>
-</section>
-
-<section id="faq" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow-light">Preguntas frecuentes</span>
-      <h2>Antes de que preguntes</h2>
-    </div>
-    <div class="faq">
-      <details open>
-        <summary>¿Reemplaza a mi contador o a mi sistema de planillas?</summary>
-        <p>No. Boleta Fiel es una herramienta de cálculo y verificación referencial. No presenta declaraciones ante SUNAT ni sustituye la asesoría de un contador colegiado o abogado laboralista para casos particulares.</p>
-      </details>
-      <details>
-        <summary>¿Cómo se actualizan las tasas de AFP, ONP y UIT?</summary>
-        <p>Las constantes legales están centralizadas en el archivo. Con la compra recibes actualizaciones durante 12 meses cada vez que cambien las tasas oficiales (SBS, SUNAT, MTPE).</p>
-      </details>
-      <details>
-        <summary>¿Necesito instalar algo?</summary>
-        <p>No. Entras directo desde el navegador de tu celular o computadora, usando tu WhatsApp como clave. No hay nada que instalar ni ningún archivo que descargar.</p>
-      </details>
-      <details>
-        <summary>¿Puedo usarlo para varios trabajadores?</summary>
-        <p>Sí, no hay límite de cálculos ni de trabajadores. Cada cálculo se hace de forma independiente dentro de la misma herramienta.</p>
-      </details>
-      <details>
-        <summary>Estoy en prácticas, no en planilla — ¿me sirve?</summary>
-        <p>Sí. El módulo de practicantes calcula tu subvención económica, la subvención adicional y tus días de descanso según la Ley N° 28518 (Modalidades Formativas Laborales), para que sepas si tu convenio de prácticas preprofesionales o profesionales está correcto.</p>
-      </details>
-      <details>
-        <summary>¿Qué pasa si encuentro un error en un cálculo?</summary>
-        <p>Escríbenos con el detalle del caso (fechas, montos, régimen) y lo revisamos. Toda cifra debe verificarse contra la fuente oficial antes de usarse en una planilla real.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <div class="cta-final">
-      <h2>Deja de recalcular gratificaciones a mano</h2>
-      <p>Un pago, acceso inmediato, y el régimen 728 resuelto en una sola herramienta.</p>
-      <div class="hero-actions">
-        <a href="#comprar" class="btn btn-terracota js-buy">Obtener acceso — S/ 9.99</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="mobile-cta-bar" id="mobileCta">
-  <div class="mcb-price">S/ 9.99<small>Pago único · por Yape</small></div>
-  <a href="#comprar" class="btn btn-terracota js-buy">Comprar por WhatsApp</a>
 </div>
 
-<footer>
-  <div class="container footer-inner">
-    <div class="footer-brand">Boleta Fiel</div>
-    <div class="footer-legal">Herramienta referencial basada en la Ley N° 728, Ley N° 27735, Ley N° 30334, D.S. N° 001-97-TR, D.Leg. N° 713 y normas de EsSalud. No constituye asesoría legal, laboral ni tributaria. Verifica siempre las cifras vigentes en sbs.gob.pe, sunat.gob.pe y essalud.gob.pe.</div>
+<div id="subscribeScreen" style="display:none;">
+  <div class="auth-card wide">
+    <div class="lock-coin">BF</div>
+    <h2 id="subscribeTitle">Activa tu suscripción</h2>
+    <p>Suscripción mensual — acceso completo a Boleta Fiel.</p>
+    <div class="sub-price-box">
+      <div class="amt">S/ 4.99</div>
+      <div class="per">por mes · se renueva manualmente cada 30 días</div>
+    </div>
+    <div class="yape-box">
+      <div class="yape-qr"></div>
+      <div class="yape-number">987-654-321</div>
+      <div class="yape-name">a nombre de [Tu Nombre] · Yape</div>
+    </div>
+    <div class="field" style="margin-bottom:12px;">
+      <label>Correo (con el que iniciaste sesión)</label>
+      <input type="email" id="voucherEmail" disabled>
+    </div>
+    <div class="field" style="margin-bottom:12px;">
+      <label>Número de operación del voucher de Yape</label>
+      <input type="text" id="voucherOp" placeholder="Ej. 00312845">
+    </div>
+    <div class="lock-error" id="subError"></div>
+    <div class="lock-ok" id="subOk"></div>
+    <button class="btn btn-primary" onclick="enviarVoucher()">Enviar comprobante</button>
+    <div class="auth-switch"><a onclick="cerrarSesion()">Cerrar sesión</a></div>
   </div>
-</footer>
+</div>
 
+<div class="wrap">
+  <header class="app">
+    <div class="brand-mark">
+      <div class="coin">BF</div>
+      <div>
+        <h1>Boleta Fiel</h1>
+        <div class="subtitle">Calculadora de remuneraciones · Régimen laboral de la actividad privada — Ley N° 728</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="sub-status-badge ok" id="subBadge" style="display:none;"></span>
+      <button class="btn" onclick="cerrarSesion()">Cerrar sesión</button>
+      <button class="btn btn-primary" onclick="window.print()">⬇ Exportar a PDF</button>
+    </div>
+  </header>
+
+  <div class="note-box warn" id="renewalBanner" style="display:none;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+    <span id="renewalBannerText"></span>
+    <button class="btn btn-primary" onclick="abrirRenovacion()" style="flex-shrink:0;">Renovar ahora</button>
+  </div>
+
+  <div class="layout">
+    <nav class="folios" id="nav"></nav>
+    <div id="panels"></div>
+  </div>
+
+  <div class="footer-note">
+    BASE LEGAL — Régimen laboral: Ley N° 728 (D.S. 003-97-TR). Gratificaciones: Ley N° 27735, Ley N° 30334. CTS: D.S. N° 001-97-TR. Vacaciones: D.Leg. N° 713. Renta de 5ª categoría: TUO Ley del Impuesto a la Renta, D.S. 122-94-EF. Modalidades formativas laborales: Ley N° 28518 y D.S. N° 007-2005-TR. Comisiones AFP consultadas en sbs.gob.pe (ago-2026). UIT 2026: S/ 5,500. Herramienta referencial — no constituye asesoría legal, laboral ni tributaria.
+    <br><br>Software con licencia de uso individual, vinculado a tu cuenta y suscripción. No la compartas.
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ===== Configuración de compra por WhatsApp =====
-   Reemplaza el número por el tuyo, en formato internacional sin '+' ni espacios:
-   Perú = 51 + número de 9 dígitos. Ejemplo real: 51987654321 */
-const WHATSAPP_NUMBER = '51927553845';
-const WHATSAPP_MENSAJE = 'Hola, quiero comprar *Boleta Fiel* (S/ 9.99, pago único). Confirmo que estoy de acuerdo con los términos del servicio.';
+/* ============================================================================
+   SUPABASE — AUTENTICACIÓN + SUSCRIPCIÓN MENSUAL (S/ 4.99) + SESIÓN ÚNICA
+   ============================================================================
+   PASOS PARA CONECTAR (una sola vez):
+   1. Crea un proyecto gratis en https://supabase.com
+   2. Ve a Project Settings → API y copia:
+        - "Project URL"       → pégalo en SUPABASE_URL
+        - clave "anon" / "publishable" → pégalo en SUPABASE_ANON_KEY
+   3. Ve al "SQL Editor" del proyecto y ejecuta el script supabase-setup.sql
+      que te entregué aparte — crea las tablas, la seguridad (RLS) y el
+      trigger de activación automática.
+   4. Reemplaza el número de Yape y el nombre en el HTML de #subscribeScreen
+      (busca "987-654-321" y "[Tu Nombre]" más arriba en este archivo).
 
-function whatsappLink(){
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MENSAJE)}`;
-}
-document.querySelectorAll('.js-buy').forEach(a=>{ a.href = whatsappLink(); a.target = '_blank'; a.rel = 'noopener'; });
+   ⚠️ ACTIVACIÓN AUTOMÁTICA — sin aprobación manual:
+   Apenas el usuario registra su número de operación, la suscripción se activa
+   sola (por 30 días) — no necesitas hacer nada. Como Yape no puede confirmar
+   el pago por sí solo, esto significa que CUALQUIER texto que alguien escriba
+   ahí activa la cuenta. Para protegerte de números falsos:
 
-/* Barra fija de compra en móvil: aparece al salir del hero */
-const mobileCta = document.getElementById('mobileCta');
-const heroEl = document.querySelector('.hero');
-if(mobileCta && heroEl && 'IntersectionObserver' in window){
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{ mobileCta.classList.toggle('show', !entry.isIntersecting); });
-  }, {threshold:0});
-  io.observe(heroEl);
+   AUDITORÍA PERIÓDICA (recomendado: 1-2 veces por semana):
+   1. Entra a Supabase → Table Editor → tabla "payment_requests".
+   2. Compara los números de operación registrados contra tu historial real
+      de Yape.
+   3. Si encuentras uno que NO existe en tu Yape, copia el "id" de esa fila
+      y ejecuta en el SQL Editor:
+        select rechazar_pago('PEGA-AQUI-EL-ID');
+      Eso le quita los 30 días que se autoasignó esa cuenta. */
+const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';       // ← reemplaza esto
+const SUPABASE_ANON_KEY = 'TU-ANON-KEY-PUBLICA-AQUI';          // ← reemplaza esto
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const SESSION_STORAGE_KEY = 'bf_session_id';
+let sessionCheckInterval = null;
+let modoAuth = 'login'; // 'login' | 'registro'
+
+/* ---------- Cambiar entre login / registro ---------- */
+function cambiarModoAuth(){
+  modoAuth = modoAuth === 'login' ? 'registro' : 'login';
+  document.getElementById('authTitle').textContent = modoAuth==='login' ? 'Ingresa a tu cuenta' : 'Crea tu cuenta';
+  document.getElementById('authSubmitBtn').textContent = modoAuth==='login' ? 'Ingresar' : 'Registrarme';
+  document.getElementById('authSubmitBtn').setAttribute('onclick', modoAuth==='login' ? 'intentarLogin()' : 'intentarRegistro()');
+  document.getElementById('authSwitch').innerHTML = modoAuth==='login'
+    ? '¿No tienes cuenta? <a onclick="cambiarModoAuth()">Regístrate aquí</a>'
+    : '¿Ya tienes cuenta? <a onclick="cambiarModoAuth()">Ingresa aquí</a>';
+  document.getElementById('authError').textContent = '';
+  document.getElementById('authOk').textContent = '';
 }
+
+/* ---------- Registro ---------- */
+async function intentarRegistro(){
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const err = document.getElementById('authError'); err.textContent='';
+  const ok = document.getElementById('authOk'); ok.textContent='';
+  if(!email || password.length < 6){ err.textContent = 'Ingresa un correo válido y una contraseña de al menos 6 caracteres.'; return; }
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if(error){ err.textContent = error.message; return; }
+  ok.textContent = '¡Cuenta creada! Ya puedes ingresar.';
+  cambiarModoAuth();
+}
+
+/* ---------- Login ---------- */
+async function intentarLogin(){
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const err = document.getElementById('authError'); err.textContent='';
+  if(!email || !password){ err.textContent = 'Ingresa tu correo y tu contraseña.'; return; }
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if(error){ err.textContent = 'Correo o contraseña incorrectos.'; return; }
+  await registrarSesionUnica(data.user.id);
+  await despuesDeLogin();
+}
+
+/* ---------- Sesión única: cada login "toma" el dispositivo activo ---------- */
+async function registrarSesionUnica(userId){
+  const nuevoId = crypto.randomUUID();
+  localStorage.setItem(SESSION_STORAGE_KEY, nuevoId);
+  await supabase.from('profiles').update({ current_session_id: nuevoId }).eq('id', userId);
+}
+async function verificarSesionUnica(userId){
+  const local = localStorage.getItem(SESSION_STORAGE_KEY);
+  const { data } = await supabase.from('profiles').select('current_session_id').eq('id', userId).single();
+  if(data && local && data.current_session_id && data.current_session_id !== local){
+    await cerrarSesion('Tu cuenta se inició en otro dispositivo, así que aquí se cerró la sesión.');
+    return false;
+  }
+  return true;
+}
+
+/* ---------- Cerrar sesión ---------- */
+async function cerrarSesion(mensaje){
+  if(sessionCheckInterval) clearInterval(sessionCheckInterval);
+  await supabase.auth.signOut();
+  localStorage.removeItem(SESSION_STORAGE_KEY);
+  document.getElementById('authScreen').style.display = 'flex';
+  document.getElementById('subscribeScreen').style.display = 'none';
+  document.querySelector('.wrap').style.display = 'none';
+  document.getElementById('authEmail').value = '';
+  document.getElementById('authPassword').value = '';
+  if(mensaje){ document.getElementById('authError').textContent = mensaje; }
+}
+
+/* ---------- Comprobar suscripción y decidir qué pantalla mostrar ---------- */
+function suscripcionVigente(perfil){
+  return !!(perfil && perfil.subscription_expires_at && new Date(perfil.subscription_expires_at) > new Date());
+}
+async function despuesDeLogin(){
+  const { data: { user } } = await supabase.auth.getUser();
+  if(!user){ return; }
+  if(!(await verificarSesionUnica(user.id))) return;
+
+  let { data: perfil } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+
+  if(suscripcionVigente(perfil)){
+    mostrarApp(perfil);
+  } else {
+    document.getElementById('voucherEmail').value = user.email;
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('subscribeScreen').style.display = 'flex';
+  }
+
+  // Revisa la sesión y el estado de la suscripción cada 30s (para reflejar
+  // aprobaciones de pago o cierres de sesión remotos sin recargar la página).
+  if(sessionCheckInterval) clearInterval(sessionCheckInterval);
+  sessionCheckInterval = setInterval(async ()=>{
+    const sigueValida = await verificarSesionUnica(user.id);
+    if(!sigueValida) return;
+    const { data: p2 } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+    if(suscripcionVigente(p2) && document.querySelector('.wrap').style.display === 'none'){
+      mostrarApp(p2);
+    } else if(!suscripcionVigente(p2) && document.querySelector('.wrap').style.display !== 'none'){
+      document.getElementById('subscribeScreen').style.display = 'flex';
+      document.querySelector('.wrap').style.display = 'none';
+    }
+    if(document.getElementById('subBadge')) actualizarBadgeSuscripcion(p2);
+  }, 30000);
+}
+
+function mostrarApp(perfil){
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('subscribeScreen').style.display = 'none';
+  document.querySelector('.wrap').style.display = 'block';
+  actualizarBadgeSuscripcion(perfil);
+  if(typeof recalcularTodo === 'function') recalcularTodo();
+}
+function actualizarBadgeSuscripcion(perfil){
+  const badge = document.getElementById('subBadge');
+  const banner = document.getElementById('renewalBanner');
+  if(!perfil || !perfil.subscription_expires_at) return;
+  const vence = new Date(perfil.subscription_expires_at);
+  const diasRestantes = Math.ceil((vence - new Date())/(1000*60*60*24));
+  if(badge){
+    badge.style.display = 'inline-flex';
+    if(diasRestantes <= 5){
+      badge.className = 'sub-status-badge warn';
+      badge.textContent = `Vence en ${diasRestantes} días`;
+    } else {
+      badge.className = 'sub-status-badge ok';
+      badge.textContent = `Activa hasta ${vence.toLocaleDateString('es-PE')}`;
+    }
+  }
+  if(banner){
+    if(diasRestantes <= 5){
+      banner.style.display = 'flex';
+      document.getElementById('renewalBannerText').innerHTML =
+        `<b>Tu suscripción vence en ${diasRestantes} día${diasRestantes===1?'':'s'}</b> (${vence.toLocaleDateString('es-PE')}). Yapea y registra tu nuevo número de operación para extender 30 días más.`;
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+}
+
+/* Reabre la pantalla de pago para renovar por adelantado, sin cerrar sesión
+   ni bloquear el acceso a la app (la suscripción sigue vigente mientras tanto). */
+async function abrirRenovacion(){
+  const { data: { user } } = await supabase.auth.getUser();
+  if(!user) return;
+  document.getElementById('voucherEmail').value = user.email;
+  document.querySelector('.wrap').style.display = 'none';
+  document.getElementById('subscribeScreen').style.display = 'flex';
+  document.getElementById('subscribeTitle').textContent = 'Renueva tu suscripción';
+}
+
+/* ---------- Enviar comprobante de Yape (activación automática e instantánea) ---------- */
+async function enviarVoucher(){
+  const err = document.getElementById('subError'); err.textContent='';
+  const ok = document.getElementById('subOk'); ok.textContent='';
+  const operacion = document.getElementById('voucherOp').value.trim();
+  if(!operacion){ err.textContent = 'Ingresa el número de operación de tu voucher.'; return; }
+  const { data: { user } } = await supabase.auth.getUser();
+  if(!user){ err.textContent = 'Tu sesión expiró, vuelve a ingresar.'; return; }
+  const { error } = await supabase.from('payment_requests').insert({
+    user_id: user.id, email: user.email, operation_number: operacion, amount: 4.99
+  });
+  if(error){ err.textContent = 'No se pudo enviar. Intenta de nuevo o escríbenos por WhatsApp.'; return; }
+  document.getElementById('voucherOp').value = '';
+  // El trigger de Supabase ya activó la suscripción — volvemos a leer el
+  // perfil para confirmarlo y entrar directo, sin esperar ninguna aprobación.
+  const { data: perfil } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+  if(suscripcionVigente(perfil)){
+    ok.textContent = '¡Listo! Tu suscripción ya está activa.';
+    await registrarSesionUnica(user.id);
+    setTimeout(()=> mostrarApp(perfil), 700);
+  } else {
+    err.textContent = 'Recibimos tu comprobante, pero algo no cuadró. Escríbenos por WhatsApp.';
+  }
+}
+
+/* ---------- Al cargar la página: ¿hay una sesión previa? ---------- */
+(async function iniciar(){
+  const { data: { session } } = await supabase.auth.getSession();
+  if(session && session.user){ await despuesDeLogin(); }
+})();
+</script>
+
+
+/* ============ CONSTANTES LEGALES (referenciales, ago-2026) ============
+   ZONA DE CONFIGURACIÓN LEGAL — edita estos valores cuando cambien las normas.
+   Fuente principal: sbs.gob.pe (AFP), sunat.gob.pe (UIT), essalud.gob.pe. */
+const RMV = 1130;
+const ASIG_FAM = Math.round(RMV*0.10*100)/100;
+const ONP_TASA = 13.00;
+const AFP_APORTE = 10.00;
+const AFP_PRIMA_SEGURO = 1.37;                 // Ley 32123 (ene-2026), igual para las 4 AFP
+const AFP_TOPE_ASEGURABLE = 12598.91;          // tope remuneración asegurable — SBS lo actualiza TRIMESTRALMENTE, verificar cada trimestre
+const ESSALUD_TASA = 9.00;
+const UIT = 5500;
+/* Comisión por flujo: solo la mantienen quienes se afiliaron antes de 2013 y eligieron no migrar.
+   Comisión anual sobre saldo: aplica a todos los afiliados desde 2013 (la gran mayoría hoy).
+   Nunca se cobran ambas a la vez. La de saldo se descuenta del FONDO acumulado, no del sueldo,
+   por eso no resta del neto a pagar en la boleta mensual — solo se muestra como referencia. */
+const AFP_FONDOS = {
+  habitat:{nombre:'AFP Habitat',   comision:1.47},
+  integra:{nombre:'AFP Integra',   comision:1.55},
+  prima:{nombre:'AFP Prima',       comision:1.60},
+  profuturo:{nombre:'AFP Profuturo',comision:1.69}
+};
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DIVISOR_RENTA = {1:12,2:12,3:12,4:9,5:8,6:7,7:6,8:5,9:4,10:3,11:2,12:1};
+
+const fmt = n => 'S/ ' + (isFinite(n)?n:0).toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
+const num = id => { const el=document.getElementById(id); if(!el) return 0; const v=parseFloat(el.value); return isFinite(v)?v:0; };
+const chk = id => document.getElementById(id).checked;
+const sel = id => document.getElementById(id).value;
+const getBasico = () => num('cfg-basico');
+const getAsigFam = () => chk('cfg-hijos') ? ASIG_FAM : 0;
+
+const state = { mensual:null, grat:null, cts:null, vac:null, renta:null, liq:null };
+
+function pensionSobre(monto, sistema, afpKey){
+  if(sistema==='afp'){
+    const fondo = AFP_FONDOS[afpKey];
+    const aporte = monto*AFP_APORTE/100;
+    const baseSeguro = Math.min(monto, AFP_TOPE_ASEGURABLE);
+    const prima = baseSeguro*AFP_PRIMA_SEGURO/100;
+    const comision = monto*fondo.comision/100;
+    return {total:aporte+prima+comision, detalle:[
+      ['Aporte obligatorio (10%)', aporte],
+      ['Prima de seguro (1.37%)', prima],
+      [`Comisión ${fondo.nombre} (${fondo.comision}%)`, comision]
+    ]};
+  }
+  const total = monto*ONP_TASA/100;
+  return {total, detalle:[[`Aporte ONP (${ONP_TASA}%)`, total]]};
+}
+function enforceMinRMV(id){
+  const el = document.getElementById(id);
+  const v = parseFloat(el.value);
+  const warnId = id+'-warn';
+  let warn = document.getElementById(warnId);
+  if(isFinite(v) && v>0 && v<RMV){
+    if(!warn){ warn=document.createElement('div'); warn.id=warnId; warn.className='inline-warn'; el.parentElement.appendChild(warn); }
+    warn.textContent = `Mínimo permitido: RMV (S/ ${RMV.toFixed(2)}). Se ajustó automáticamente.`;
+    el.value = RMV.toFixed(2);
+    el.dispatchEvent(new Event('input'));
+  } else if(warn){ warn.remove(); }
+}
+function parseDate(str){ if(!str) return null; const [y,m,d]=str.split('-').map(Number); return new Date(y,m-1,d); }
+function diffMesesDias30(f1,f2){
+  let y1=f1.getFullYear(), m1=f1.getMonth()+1, d1=Math.min(f1.getDate(),30);
+  let y2=f2.getFullYear(), m2=f2.getMonth()+1, d2=Math.min(f2.getDate(),30);
+  let meses=(y2-y1)*12+(m2-m1), dias=d2-d1;
+  if(dias<0){ meses-=1; dias+=30; }
+  if(meses<0){ meses=0; dias=0; }
+  return {meses,dias};
+}
+function addYears(d,n){ return new Date(d.getFullYear()+n, d.getMonth(), d.getDate()); }
+
+/* Banner de "remuneración base" reutilizable en cada pestaña */
+function basicoBanner(){
+  return `<div class="base-banner">
+    <div><span class="k">Remuneración básica fija (Configuración)</span><br><span class="v" id="disp-basico">S/ 0.00</span></div>
+    <a onclick="showPanel('config')">Editar en Configuración →</a>
+  </div>`;
+}
+function refreshBasicoBanners(){
+  document.querySelectorAll('[id^=disp-basico]').forEach(el=>{ el.textContent = fmt(getBasico()); });
+}
+
+/* ============ PESTAÑAS ============ */
+const folios = [
+  {id:'config', num:'01', label:'Configuración'},
+  {id:'mensual', num:'02', label:'Remuneración mensual'},
+  {id:'grat', num:'03', label:'Gratificación'},
+  {id:'cts', num:'04', label:'CTS'},
+  {id:'vac', num:'05', label:'Vacaciones'},
+  {id:'liq', num:'06', label:'Liquidación de beneficios'},
+  {id:'resumen', num:'07', label:'Resumen anual'},
+  {id:'salud', num:'08', label:'Módulo de practicantes'}
+];
+const nav = document.getElementById('nav');
+folios.forEach(f=>{
+  const b=document.createElement('button'); b.className='folio-btn'; b.dataset.target=f.id;
+  b.innerHTML=`<span class="num">${f.num}</span><span>${f.label}</span>`;
+  b.onclick=()=>showPanel(f.id);
+  nav.appendChild(b);
+});
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.folio-btn').forEach(b=>b.classList.toggle('active', b.dataset.target===id));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(id==='resumen') renderResumen();
+}
+const panels = document.getElementById('panels');
+
+/* ============ 01 · CONFIGURACIÓN ============ */
+panels.innerHTML += `
+<div class="panel active" id="panel-config">
+  <div class="card">
+    <h2>Datos del trabajador y remuneración base</h2>
+    <p class="desc">La remuneración básica que ingreses aquí se usará automáticamente en Remuneración mensual, Gratificación, CTS, Vacaciones y Liquidación. El módulo de practicantes tiene su propia subvención, independiente de este dato.</p>
+    <div class="grid">
+      <div class="field">
+        <label>Nombre del trabajador (opcional)</label>
+        <input type="text" id="cfg-nombre" placeholder="Ej. Juan Pérez Quispe">
+      </div>
+      <div class="field">
+        <label>Remuneración básica mensual fija</label>
+        <input type="number" id="cfg-basico" placeholder="0.00" min="1130" oninput="recalcularTodo()" onblur="enforceMinRMV('cfg-basico')">
+        <span class="hint">Mínimo: RMV = S/ ${RMV.toFixed(2)}</span>
+      </div>
+      <div class="field">
+        <label>Fecha de ingreso</label>
+        <input type="date" id="cfg-fecha" onchange="recalcularTodo()">
+      </div>
+      <div class="field">
+        <label>Sistema pensionario</label>
+        <select id="cfg-sistema" onchange="toggleAFP(); recalcularTodo();">
+          <option value="afp">Sistema Privado de Pensiones (AFP)</option>
+          <option value="onp">Sistema Nacional de Pensiones (ONP)</option>
+        </select>
+      </div>
+      <div class="field" id="cfg-afp-wrap">
+        <label>AFP</label>
+        <select id="cfg-afp" onchange="recalcularTodo()">
+          ${Object.entries(AFP_FONDOS).map(([k,v])=>`<option value="${k}">${v.nombre} — comisión ${v.comision}%</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="checkrow">
+      <input type="checkbox" id="cfg-hijos" onchange="recalcularTodo()">
+      <label for="cfg-hijos">Tiene hijos menores de 18 años (o hasta 24 si estudian) → corresponde Asignación Familiar</label>
+    </div>
+    <div class="note-box"><b>Asignación Familiar:</b> 10% de la RMV = <b>${fmt(ASIG_FAM)}</b> mensuales, monto fijo. Se aplica automáticamente en todas las pestañas si marcas la casilla.</div>
+    <div class="badge-row">
+      <span class="badge">RMV: S/ ${RMV.toFixed(2)}</span>
+      <span class="badge">UIT 2026: S/ ${UIT.toLocaleString('es-PE')}</span>
+      <span class="badge">ONP: ${ONP_TASA}% flat</span>
+      <span class="badge">AFP: 10% + 1.37% + comisión</span>
+    </div>
+  </div>
+</div>`;
+function toggleAFP(){ document.getElementById('cfg-afp-wrap').style.display = sel('cfg-sistema')==='afp' ? 'flex':'none'; }
+
+/* ============ 02 · REMUNERACIÓN MENSUAL ============ */
+panels.innerHTML += `
+<div class="panel" id="panel-mensual">
+  <div class="card">
+    ${basicoBanner()}
+    <h2>Ingresos del mes</h2>
+    <p class="desc">La remuneración básica y la asignación familiar se toman de Configuración. Completa aquí los conceptos variables del mes.</p>
+    <div class="grid">
+      <div class="field"><label>Comisiones del mes</label><input type="number" id="m-comisiones" placeholder="0.00" oninput="calcMensual()"></div>
+      <div class="field"><label>Bonos / bonificaciones fijas</label><input type="number" id="m-bonos" placeholder="0.00" oninput="calcMensual()"></div>
+      <div class="field"><label>Otros ingresos afectos</label><input type="number" id="m-otros" placeholder="0.00" oninput="calcMensual()"></div>
+    </div>
+    <hr class="divider">
+    <p class="section-label">Horas extra (sobretiempo)</p>
+    <div class="grid g3">
+      <div class="field"><label>Horas al 25% (primeras 2 h/día)</label><input type="number" id="m-he25" placeholder="0" oninput="calcMensual()"></div>
+      <div class="field"><label>Horas al 35% (excedente del día)</label><input type="number" id="m-he35" placeholder="0" oninput="calcMensual()"></div>
+      <div class="field"><label>Horas al 100% (descanso/feriado sin sustitución)</label><input type="number" id="m-he100" placeholder="0" oninput="calcMensual()"></div>
+    </div>
+    <div class="note-box">Valor hora ordinaria = (Remuneración básica / 30) / 8 = <b id="m-valorhora">S/ 0.00</b>.</div>
+    <hr class="divider">
+    <p class="section-label">Descuentos adicionales</p>
+    <div class="grid">
+      <div class="field"><label>Adelanto de sueldo</label><input type="number" id="m-adelanto" placeholder="0.00" oninput="calcMensual()"></div>
+      <div class="field"><label>Otros descuentos (préstamos, tardanzas, etc.)</label><input type="number" id="m-otrosdesc" placeholder="0.00" oninput="calcMensual()"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Detalle del cálculo — neto a pagar</h2>
+    <table class="ledger" id="m-ledger"></table>
+    <div class="stat-bar-wrap">
+      <div class="stat-bar-label"><span>Neto a pagar</span><span id="m-bar-pct">0%</span></div>
+      <div class="stat-bar"><div class="stat-bar-fill success" id="m-bar-fill" style="width:0%;"></div></div>
+    </div>
+    <div class="note-box"><b>Aportes a cargo del empleador</b> (no se descuentan al trabajador): EsSalud ${ESSALUD_TASA}% sobre la remuneración bruta = <span id="m-essalud">S/ 0.00</span>.</div>
+  </div>
+</div>`;
+
+function calcMensual(){
+  const basico = getBasico();
+  const asigFam = getAsigFam();
+  const comisiones = num('m-comisiones'), bonos = num('m-bonos'), otros = num('m-otros');
+  const valorHora = basico/30/8;
+  document.getElementById('m-valorhora').textContent = fmt(valorHora);
+  const he25 = num('m-he25')*valorHora*1.25;
+  const he35 = num('m-he35')*valorHora*1.35;
+  const he100 = num('m-he100')*valorHora*2.00;
+  const bruto = basico+asigFam+comisiones+bonos+otros+he25+he35+he100;
+
+  const sistema = sel('cfg-sistema'), afpKey = sel('cfg-afp');
+  const pension = pensionSobre(bruto, sistema, afpKey);
+  const adelanto = num('m-adelanto'), otrosdesc = num('m-otrosdesc');
+
+  /* Renta de 5ª categoría — cálculo automático, oculto, solo aparece como concepto */
+  const mesActual = new Date().getMonth()+1;
+  const gratProy = 2*(basico+asigFam);
+  const RBA = bruto*12 + gratProy;
+  const RN = Math.max(0, RBA-7*UIT);
+  const t1=Math.min(RN,5*UIT)*0.08, t2=Math.max(0,Math.min(RN,20*UIT)-5*UIT)*0.14,
+        t3=Math.max(0,Math.min(RN,35*UIT)-20*UIT)*0.17, t4=Math.max(0,Math.min(RN,45*UIT)-35*UIT)*0.20,
+        t5=Math.max(0,RN-45*UIT)*0.30;
+  const impuestoAnual = t1+t2+t3+t4+t5;
+  const retencionMes = impuestoAnual/DIVISOR_RENTA[mesActual];
+  state.renta = {impuestoAnual, retencionMes};
+
+  const totalDesc = pension.total+adelanto+otrosdesc+retencionMes;
+  const neto = bruto-totalDesc;
+  const essalud = bruto*ESSALUD_TASA/100;
+
+  let rows='';
+  rows += `<tr><td colspan="2" class="section-label" style="padding-top:0;">INGRESOS</td></tr>`;
+  rows += `<tr class="tag-add"><td>Remuneración básica</td><td>${fmt(basico)}</td></tr>`;
+  if(asigFam) rows += `<tr class="tag-add"><td>Asignación familiar</td><td>${fmt(asigFam)}</td></tr>`;
+  if(comisiones) rows += `<tr class="tag-add"><td>Comisiones</td><td>${fmt(comisiones)}</td></tr>`;
+  if(bonos) rows += `<tr class="tag-add"><td>Bonos</td><td>${fmt(bonos)}</td></tr>`;
+  if(otros) rows += `<tr class="tag-add"><td>Otros ingresos</td><td>${fmt(otros)}</td></tr>`;
+  if(he25) rows += `<tr class="tag-add"><td>Horas extra 25%</td><td>${fmt(he25)}</td></tr>`;
+  if(he35) rows += `<tr class="tag-add"><td>Horas extra 35%</td><td>${fmt(he35)}</td></tr>`;
+  if(he100) rows += `<tr class="tag-add"><td>Horas al 100%</td><td>${fmt(he100)}</td></tr>`;
+  rows += `<tr class="total"><td>Total ingreso bruto</td><td>${fmt(bruto)}</td></tr>`;
+  rows += `<tr><td colspan="2" class="section-label" style="padding-top:14px;">DESCUENTOS</td></tr>`;
+  pension.detalle.forEach(([l,v])=> rows += `<tr class="tag-sub"><td>${l}</td><td>-${fmt(v)}</td></tr>`);
+  if(adelanto) rows += `<tr class="tag-sub"><td>Adelanto de sueldo</td><td>-${fmt(adelanto)}</td></tr>`;
+  if(otrosdesc) rows += `<tr class="tag-sub"><td>Otros descuentos</td><td>-${fmt(otrosdesc)}</td></tr>`;
+  if(retencionMes>0) rows += `<tr class="tag-sub"><td>Renta de quinta</td><td>-${fmt(retencionMes)}</td></tr>`;
+  rows += `<tr class="total"><td>Neto a pagar</td><td>${fmt(neto)}</td></tr>`;
+  document.getElementById('m-ledger').innerHTML = rows;
+  document.getElementById('m-essalud').textContent = fmt(essalud);
+
+  state.mensual = {basico, asigFam, bruto, neto, sistema};
+  const pct = bruto>0 ? Math.max(0,Math.min(100,(neto/bruto)*100)) : 0;
+  document.getElementById('m-bar-fill').style.width = pct.toFixed(1)+'%';
+  document.getElementById('m-bar-pct').textContent = pct.toFixed(0)+'% del bruto';
+  refreshBasicoBanners();
+}
+
+/* ============ 03 · GRATIFICACIÓN ============ */
+panels.innerHTML += `
+<div class="panel" id="panel-grat">
+  <div class="card">
+    ${basicoBanner()}
+    <h2>Gratificación (Ley N° 27735)</h2>
+    <p class="desc">Enero–junio (pago julio) y julio–diciembre (pago diciembre). Exonerada de AFP/ONP y EsSalud/EPS (Ley N° 30334).</p>
+    <div class="grid g3">
+      <div class="field">
+        <label>Periodo a calcular</label>
+        <select id="g-periodo" onchange="calcPeriodoGrat()">
+          <option value="h1">Enero – Junio (pago: Julio)</option>
+          <option value="h2">Julio – Diciembre (pago: Diciembre)</option>
+        </select>
+      </div>
+      <div class="field"><label>Año del periodo</label><input type="number" id="g-anio" value="2026" oninput="calcPeriodoGrat()"></div>
+      <div class="field">
+        <label>Seguro de salud</label>
+        <select id="g-salud" onchange="calcGrat()">
+          <option value="9">EsSalud (bonificación extraordinaria 9%)</option>
+          <option value="6.75">EPS (bonificación extraordinaria 6.75%)</option>
+        </select>
+      </div>
+      <div class="field"><label>Promedio de ingresos variables (últimos 6 meses)</label><input type="number" id="g-variable" placeholder="0.00" oninput="calcGrat()"></div>
+      <div class="field"><label>Meses completos en el periodo</label><input type="number" id="g-meses" min="0" max="6" value="6" oninput="calcGrat()"></div>
+      <div class="field"><label>Días adicionales</label><input type="number" id="g-dias" min="0" max="29" placeholder="0" oninput="calcGrat()"></div>
+    </div>
+    <div class="note-box" id="g-periodo-note">Ingresa la fecha de ingreso en Configuración para calcular automáticamente los meses/días según el periodo.</div>
+    <hr class="divider">
+    <table class="ledger" id="g-ledger"></table>
+  </div>
+</div>`;
+function calcPeriodoGrat(){
+  const ingreso = parseDate(sel('cfg-fecha'));
+  const periodo = sel('g-periodo'); const anio = num('g-anio')||new Date().getFullYear();
+  const inicio = periodo==='h1'? new Date(anio,0,1): new Date(anio,6,1);
+  const fin = periodo==='h1'? new Date(anio,5,30): new Date(anio,11,31);
+  const note = document.getElementById('g-periodo-note');
+  if(!ingreso){ note.className='note-box'; note.textContent='Ingresa la fecha de ingreso en Configuración para calcular automáticamente los meses/días.'; calcGrat(); return; }
+  if(ingreso>fin){
+    document.getElementById('g-meses').value=0; document.getElementById('g-dias').value=0;
+    note.className='note-box danger'; note.textContent=`El trabajador ingresó el ${sel('cfg-fecha')}, después de este periodo: no corresponde gratificación.`;
+    calcGrat(); return;
+  }
+  const efectivo = ingreso>inicio?ingreso:inicio;
+  let {meses,dias} = diffMesesDias30(efectivo, fin); dias+=1;
+  if(dias>=30){dias-=30; meses+=1;} if(meses>=6){meses=6;dias=0;}
+  document.getElementById('g-meses').value=meses; document.getElementById('g-dias').value=dias;
+  note.className = meses<6?'note-box warn':'note-box';
+  note.textContent = meses<6 ? `Ingresó el ${sel('cfg-fecha')} → proporcional: ${meses} meses y ${dias} días.` : 'Ingresó antes del inicio del periodo → periodo completo (6 meses).';
+  calcGrat();
+}
+function calcGrat(){
+  const basico=getBasico(), asigFam=getAsigFam(), variable=num('g-variable');
+  const rc = basico+asigFam+variable;
+  const meses=Math.min(num('g-meses'),6), dias=num('g-dias');
+  const grat = rc*(meses/6)+rc*(dias/180);
+  const bonifPct = parseFloat(sel('g-salud'));
+  const bonif = grat*bonifPct/100;
+  const neto = grat+bonif;
+  let rows='';
+  rows += `<tr><td>Remuneración computable</td><td>${fmt(rc)}</td></tr>`;
+  rows += `<tr class="sub"><td>× (${meses} meses / 6 + ${dias} días / 180)</td><td></td></tr>`;
+  rows += `<tr class="total"><td>Gratificación bruta</td><td>${fmt(grat)}</td></tr>`;
+  rows += `<tr class="sub"><td>Descuento AFP/ONP</td><td>No aplica — exonerado (Ley 30334)</td></tr>`;
+  rows += `<tr class="tag-add"><td>Bonificación extraordinaria (${bonifPct}%)</td><td>+${fmt(bonif)}</td></tr>`;
+  rows += `<tr class="total"><td>Neto a pagar</td><td>${fmt(neto)}</td></tr>`;
+  document.getElementById('g-ledger').innerHTML = rows;
+  state.grat = {rc, grat, bonif, neto};
+  refreshBasicoBanners();
+}
+
+/* ============ 04 · CTS ============ */
+panels.innerHTML += `
+<div class="panel" id="panel-cts">
+  <div class="card">
+    ${basicoBanner()}
+    <h2>CTS (D.S. 001-97-TR)</h2>
+    <p class="desc">Nov–Abr → depósito Mayo. May–Oct → depósito Noviembre. No sujeta a AFP/ONP/EsSalud.</p>
+    <div class="grid g3">
+      <div class="field">
+        <label>Periodo a calcular</label>
+        <select id="c-periodo" onchange="calcPeriodoCTS()">
+          <option value="nov-abr">Noviembre – Abril (depósito: Mayo)</option>
+          <option value="may-oct">Mayo – Octubre (depósito: Noviembre)</option>
+        </select>
+      </div>
+      <div class="field"><label>Año de depósito</label><input type="number" id="c-anio" value="2026" oninput="calcPeriodoCTS()"></div>
+      <div class="field"></div>
+      <div class="field"><label>Promedio de ingresos variables regulares</label><input type="number" id="c-variable" placeholder="0.00" oninput="calcCTS()"></div>
+      <div class="field"><label>1/6 de la última gratificación (bruta, sin bonificación)</label><input type="number" id="c-sextogrado" placeholder="0.00" oninput="calcCTS()"></div>
+      <div class="field"><label>Meses completos en el periodo</label><input type="number" id="c-meses" min="0" max="6" value="6" oninput="calcCTS()"></div>
+      <div class="field"><label>Días adicionales</label><input type="number" id="c-dias" min="0" max="29" placeholder="0" oninput="calcCTS()"></div>
+    </div>
+    <button class="btn btn-ghost" onclick="copiarSextoGrat()">Usar 1/6 de la gratificación calculada</button>
+    <div class="note-box" id="c-periodo-note">Ingresa la fecha de ingreso en Configuración para calcular automáticamente los meses/días.</div>
+    <hr class="divider">
+    <table class="ledger" id="c-ledger"></table>
+  </div>
+</div>`;
+function copiarSextoGrat(){ const g = state.grat? state.grat.grat/6:0; document.getElementById('c-sextogrado').value=g.toFixed(2); calcCTS(); }
+function calcPeriodoCTS(){
+  const ingreso = parseDate(sel('cfg-fecha'));
+  const periodo = sel('c-periodo'); const anioDeposito = num('c-anio')||new Date().getFullYear();
+  const inicio = periodo==='nov-abr'? new Date(anioDeposito-1,10,1): new Date(anioDeposito,4,1);
+  const fin = periodo==='nov-abr'? new Date(anioDeposito,3,30): new Date(anioDeposito,9,31);
+  const note = document.getElementById('c-periodo-note');
+  if(!ingreso){ note.className='note-box'; note.textContent='Ingresa la fecha de ingreso en Configuración para calcular automáticamente los meses/días.'; calcCTS(); return; }
+  if(ingreso>fin){
+    document.getElementById('c-meses').value=0; document.getElementById('c-dias').value=0;
+    note.className='note-box danger'; note.textContent=`El trabajador ingresó el ${sel('cfg-fecha')}, después de este periodo: no corresponde depósito en esta fecha.`;
+    calcCTS(); return;
+  }
+  const efectivo = ingreso>inicio?ingreso:inicio;
+  let {meses,dias} = diffMesesDias30(efectivo, fin); dias+=1;
+  if(dias>=30){dias-=30; meses+=1;} if(meses>=6){meses=6;dias=0;}
+  document.getElementById('c-meses').value=meses; document.getElementById('c-dias').value=dias;
+  note.className = meses<6?'note-box warn':'note-box';
+  note.textContent = meses<6 ? `Ingresó el ${sel('cfg-fecha')} → proporcional: ${meses} meses y ${dias} días.` : 'Ingresó antes del inicio del periodo → semestre completo (6 meses).';
+  calcCTS();
+}
+function calcCTS(){
+  const basico=getBasico(), asigFam=getAsigFam(), variable=num('c-variable'), sexto=num('c-sextogrado');
+  const rc = basico+asigFam+variable+sexto;
+  const meses=Math.min(num('c-meses'),6), dias=num('c-dias');
+  const cts = rc*(meses/12)+rc*(dias/360);
+  let rows='';
+  rows += `<tr><td>Remuneración computable CTS</td><td>${fmt(rc)}</td></tr>`;
+  rows += `<tr class="sub"><td>× (${meses} meses / 12 + ${dias} días / 360)</td><td></td></tr>`;
+  rows += `<tr class="total"><td>Depósito CTS del semestre</td><td>${fmt(cts)}</td></tr>`;
+  document.getElementById('c-ledger').innerHTML = rows;
+  state.cts = {rc, cts};
+  refreshBasicoBanners();
+}
+
+/* ============ 05 · VACACIONES (solo gozadas) ============ */
+panels.innerHTML += `
+<div class="panel" id="panel-vac">
+  <div class="card">
+    ${basicoBanner()}
+    <h2>Vacaciones gozadas (D.Leg. N° 713)</h2>
+    <p class="desc">30 días calendario por año completo de servicios. Afecta a AFP/ONP.</p>
+    <div class="grid g3">
+      <div class="field"><label>Promedio de ingresos variables (si aplica)</label><input type="number" id="v-variable" placeholder="0.00" oninput="calcVac()"></div>
+      <div class="field"><label>Número de días de vacaciones que va a tomar</label><input type="number" id="v-dias" min="1" max="30" value="30" oninput="calcVac()"></div>
+    </div>
+    <hr class="divider">
+    <table class="ledger" id="v-ledger"></table>
+    <div class="stat-bar-wrap">
+      <div class="stat-bar-label"><span>Días de descanso</span><span id="v-bar-label">0 / 30 días</span></div>
+      <div class="stat-bar"><div class="stat-bar-fill" id="v-bar-fill" style="width:0%;"></div></div>
+    </div>
+  </div>
+</div>`;
+function calcVac(){
+  const basico=getBasico(), asigFam=getAsigFam(), variable=num('v-variable');
+  const rc = basico+asigFam+variable;
+  const dias = Math.min(30, num('v-dias'));
+  const bruto = (rc/30)*dias;
+  const pension = pensionSobre(bruto, sel('cfg-sistema'), sel('cfg-afp'));
+  const neto = bruto-pension.total;
+  let rows='';
+  rows += `<tr><td>Remuneración diaria (RC/30)</td><td>${fmt(rc/30)}</td></tr>`;
+  rows += `<tr><td>× ${dias} días de descanso</td><td>${fmt(bruto)}</td></tr>`;
+  pension.detalle.forEach(([l,v])=> rows += `<tr class="tag-sub"><td>${l}</td><td>-${fmt(v)}</td></tr>`);
+  rows += `<tr class="total"><td>Neto a pagar</td><td>${fmt(neto)}</td></tr>`;
+  document.getElementById('v-ledger').innerHTML = rows;
+  document.getElementById('v-bar-fill').style.width = ((dias/30)*100).toFixed(1)+'%';
+  document.getElementById('v-bar-label').textContent = `${dias} / 30 días`;
+  state.vac = {rc, neto};
+  refreshBasicoBanners();
+}
+
+/* ============ 06 · LIQUIDACIÓN DE BENEFICIOS SOCIALES ============ */
+panels.innerHTML += `
+<div class="panel" id="panel-liq">
+  <div class="card">
+    ${basicoBanner()}
+    <h2>Simulación de Liquidación de Beneficios Sociales</h2>
+    <p class="desc">Estima el pago por cese: remuneración pendiente, gratificación trunca, CTS trunca y vacaciones truncas, menos los descuentos que correspondan.</p>
+    <div class="grid g3">
+      <div class="field"><label>Fecha de cese</label><input type="date" id="l-fecha" onchange="calcLiquidacion()"></div>
+      <div class="field"><label>Promedio de ingresos variables regulares</label><input type="number" id="l-variable" placeholder="0.00" oninput="calcLiquidacion()"></div>
+      <div class="field">
+        <label>Seguro de salud (para bonificación de grat. trunca)</label>
+        <select id="l-salud" onchange="calcLiquidacion()"><option value="9">EsSalud (9%)</option><option value="6.75">EPS (6.75%)</option></select>
+      </div>
+      <div class="field"><label>Adelantos pendientes de descontar</label><input type="number" id="l-adelanto" placeholder="0.00" oninput="calcLiquidacion()"></div>
+      <div class="field"><label>Otros descuentos pendientes</label><input type="number" id="l-otrosdesc" placeholder="0.00" oninput="calcLiquidacion()"></div>
+      <div class="field"><label>Retención de renta de quinta en la liquidación</label><input type="number" id="l-renta" placeholder="0.00" oninput="calcLiquidacion()"></div>
+    </div>
+    <div class="note-box" id="l-note">Ingresa la fecha de ingreso en Configuración y la fecha de cese para calcular los periodos truncos.</div>
+    <hr class="divider">
+    <table class="ledger" id="l-ledger"></table>
+  </div>
+</div>`;
+function calcLiquidacion(){
+  const note = document.getElementById('l-note');
+  const ingreso = parseDate(sel('cfg-fecha'));
+  const cese = parseDate(sel('l-fecha'));
+  const basico=getBasico(), asigFam=getAsigFam(), variable=num('l-variable');
+  const rc = basico+asigFam+variable;
+  const adelanto=num('l-adelanto'), otrosdesc=num('l-otrosdesc'), rentaQuinta=num('l-renta');
+  const sistema=sel('cfg-sistema'), afpKey=sel('cfg-afp');
+
+  if(!ingreso || !cese){
+    note.className='note-box warn';
+    note.textContent='Completa la fecha de ingreso (Configuración) y la fecha de cese para calcular la liquidación.';
+    document.getElementById('l-ledger').innerHTML=''; return;
+  }
+  if(cese<ingreso){
+    note.className='note-box danger';
+    note.textContent='La fecha de cese no puede ser anterior a la fecha de ingreso.';
+    document.getElementById('l-ledger').innerHTML=''; return;
+  }
+  note.className='note-box';
+  note.textContent=`Liquidación estimada al ${sel('l-fecha')}. Los periodos truncos se calculan con la convención laboral de meses de 30 días.`;
+
+  // 1) Remuneración trunca del mes de cese
+  const diaCese = Math.min(30, cese.getDate());
+  const remTruncaMes = (rc/30)*diaCese;
+
+  // 2) Gratificación trunca (semestre que contiene la fecha de cese)
+  const mesCese = cese.getMonth()+1, anioCese = cese.getFullYear();
+  const inicioSemGrat = mesCese<=6 ? new Date(anioCese,0,1) : new Date(anioCese,6,1);
+  const efectivoGrat = ingreso>inicioSemGrat ? ingreso : inicioSemGrat;
+  let gratTrunca=0, bonifGrat=0, mesesGrat=0, diasGrat=0;
+  if(efectivoGrat<=cese){
+    let {meses,dias} = diffMesesDias30(efectivoGrat, cese); dias+=1;
+    if(dias>=30){dias-=30; meses+=1;} if(meses>6){meses=6;dias=0;}
+    mesesGrat=meses; diasGrat=dias;
+    gratTrunca = rc*(meses/6)+rc*(dias/180);
+    bonifGrat = gratTrunca*parseFloat(sel('l-salud'))/100;
+  }
+
+  // 3) CTS trunca (semestre CTS que contiene la fecha de cese)
+  let inicioSemCTS;
+  if(mesCese>=11) inicioSemCTS = new Date(anioCese,10,1);
+  else if(mesCese<=4) inicioSemCTS = new Date(anioCese-1,10,1);
+  else inicioSemCTS = new Date(anioCese,4,1);
+  const efectivoCTS = ingreso>inicioSemCTS ? ingreso : inicioSemCTS;
+  let ctsTrunca=0, mesesCTS=0, diasCTS=0;
+  if(efectivoCTS<=cese){
+    let {meses,dias} = diffMesesDias30(efectivoCTS, cese); dias+=1;
+    if(dias>=30){dias-=30; meses+=1;} if(meses>6){meses=6;dias=0;}
+    mesesCTS=meses; diasCTS=dias;
+    const rcCTS = rc + gratTrunca/6;
+    ctsTrunca = rcCTS*(meses/12)+rcCTS*(dias/360);
+  }
+
+  // 4) Vacaciones truncas (récord vacacional en curso desde el último aniversario)
+  const totalServicio = diffMesesDias30(ingreso, cese);
+  const aniosCompletos = Math.floor(totalServicio.meses/12);
+  const inicioRecord = addYears(ingreso, aniosCompletos);
+  let diasVacTruncas=0, vacTruncaBruto=0;
+  if(inicioRecord<=cese){
+    let {meses,dias} = diffMesesDias30(inicioRecord, cese); dias+=1;
+    if(dias>=30){dias-=30; meses+=1;}
+    diasVacTruncas = Math.min(30, meses*2.5 + dias*(2.5/30));
+    vacTruncaBruto = (rc/30)*diasVacTruncas;
+  }
+
+  // Descuentos: AFP/ONP solo sobre conceptos remunerativos (rem. trunca del mes + vacaciones truncas)
+  const pension = pensionSobre(remTruncaMes+vacTruncaBruto, sistema, afpKey);
+  const totalIngresos = remTruncaMes+gratTrunca+bonifGrat+ctsTrunca+vacTruncaBruto;
+  const totalDescuentos = pension.total+adelanto+otrosdesc+rentaQuinta;
+  const netoLiquidacion = totalIngresos-totalDescuentos;
+
+  let rows='';
+  rows += `<tr><td colspan="2" class="section-label" style="padding-top:0;">INGRESOS</td></tr>`;
+  rows += `<tr class="tag-add"><td>Remuneración trunca del mes de cese (${diaCese} días)</td><td>${fmt(remTruncaMes)}</td></tr>`;
+  rows += `<tr class="tag-add"><td>Gratificación trunca (${mesesGrat}m ${diasGrat}d)</td><td>${fmt(gratTrunca)}</td></tr>`;
+  if(bonifGrat) rows += `<tr class="tag-add"><td>Bonificación extraordinaria de la grat. trunca</td><td>${fmt(bonifGrat)}</td></tr>`;
+  rows += `<tr class="tag-add"><td>CTS trunca (${mesesCTS}m ${diasCTS}d)</td><td>${fmt(ctsTrunca)}</td></tr>`;
+  rows += `<tr class="tag-add"><td>Vacaciones truncas (${diasVacTruncas.toFixed(2)} días)</td><td>${fmt(vacTruncaBruto)}</td></tr>`;
+  rows += `<tr class="total"><td>Total ingresos</td><td>${fmt(totalIngresos)}</td></tr>`;
+  rows += `<tr><td colspan="2" class="section-label" style="padding-top:14px;">DESCUENTOS</td></tr>`;
+  pension.detalle.forEach(([l,v])=> rows += `<tr class="tag-sub"><td>${l} (sobre rem. trunca + vacaciones)</td><td>-${fmt(v)}</td></tr>`);
+  if(adelanto) rows += `<tr class="tag-sub"><td>Adelantos pendientes</td><td>-${fmt(adelanto)}</td></tr>`;
+  if(otrosdesc) rows += `<tr class="tag-sub"><td>Otros descuentos</td><td>-${fmt(otrosdesc)}</td></tr>`;
+  if(rentaQuinta) rows += `<tr class="tag-sub"><td>Renta de quinta</td><td>-${fmt(rentaQuinta)}</td></tr>`;
+  rows += `<tr class="total"><td>Neto de la liquidación</td><td>${fmt(netoLiquidacion)}</td></tr>`;
+  document.getElementById('l-ledger').innerHTML = rows;
+  state.liq = {netoLiquidacion};
+  refreshBasicoBanners();
+}
+
+/* ============ 07 · RESUMEN ANUAL ============ */
+panels.innerHTML += `
+<div class="panel" id="panel-resumen">
+  <div class="card">
+    <h2>Resumen anual estimado</h2>
+    <p class="desc">Proyección referencial basada en los últimos valores calculados en cada pestaña.</p>
+    <div class="summary-grid" id="resumen-grid"></div>
+    <hr class="divider">
+    <table class="ledger" id="resumen-ledger"></table>
+  </div>
+</div>`;
+function renderResumen(){
+  const m=state.mensual,g=state.grat,c=state.cts,v=state.vac,r=state.renta;
+  const netoMensualAnual = m? m.neto*12:0;
+  const gratAnual = g? g.neto*2:0;
+  const ctsAnual = c? c.cts*2:0;
+  const vacAnual = v? v.neto:0;
+  const impuestoRenta = r? r.impuestoAnual:0;
+  const totalAnual = netoMensualAnual+gratAnual+ctsAnual+vacAnual;
+  document.getElementById('resumen-grid').innerHTML = `
+    <div class="stat-card"><div class="lbl">12 sueldos netos</div><div class="val">${fmt(netoMensualAnual)}</div><div class="sub">${m?fmt(m.neto)+' × 12':'sin datos'}</div></div>
+    <div class="stat-card"><div class="lbl">Gratificaciones (×2)</div><div class="val">${fmt(gratAnual)}</div><div class="sub">jul + dic</div></div>
+    <div class="stat-card"><div class="lbl">CTS (×2 depósitos)</div><div class="val">${fmt(ctsAnual)}</div><div class="sub">may + nov</div></div>
+    <div class="stat-card"><div class="lbl">Vacaciones</div><div class="val">${fmt(vacAnual)}</div><div class="sub">último cálculo</div></div>`;
+  let rows='';
+  rows += `<tr><td>12 remuneraciones netas mensuales</td><td>${fmt(netoMensualAnual)}</td></tr>`;
+  rows += `<tr><td>Gratificaciones (julio + diciembre)</td><td>${fmt(gratAnual)}</td></tr>`;
+  rows += `<tr><td>CTS (mayo + noviembre)</td><td>${fmt(ctsAnual)}</td></tr>`;
+  rows += `<tr><td>Vacaciones</td><td>${fmt(vacAnual)}</td></tr>`;
+  rows += `<tr class="total"><td>Total ingreso anual estimado</td><td>${fmt(totalAnual)}</td></tr>`;
+  rows += `<tr class="tag-sub"><td>Referencia: Impuesto a la Renta 5ª categoría (anual proyectado)</td><td>${fmt(impuestoRenta)}</td></tr>`;
+  document.getElementById('resumen-ledger').innerHTML = rows;
+}
+
+/* ============ 08 · MÓDULO DE PRACTICANTES ============ */
+panels.innerHTML += `
+<div class="panel" id="panel-salud">
+  <div class="card">
+    <h2>Módulo de practicantes</h2>
+    <p class="desc">Modalidades Formativas Laborales — Ley N° 28518 y su Reglamento (D.S. N° 007-2005-TR). El practicante <b>no percibe remuneración</b>: recibe una <b>subvención económica</b> mensual, que no puede ser menor a una Remuneración Mínima Vital (RMV) cuando cumple la jornada máxima de su modalidad. No firma un contrato de trabajo, sino un <b>convenio de prácticas</b>: no genera vínculo laboral, por lo que no corresponden CTS, gratificación ni vacaciones plenas — sí corresponden subvención, seguro y descanso.</p>
+    <div class="grid g3">
+      <div class="field">
+        <label>Modalidad formativa</label>
+        <select id="f-modalidad" onchange="onModalidadChange()">
+          <option value="preprofesional">Práctica preprofesional (estudiante)</option>
+          <option value="profesional">Práctica profesional (egresado, hasta 12 meses)</option>
+          <option value="capacitacion">Capacitación laboral juvenil (16–23 años)</option>
+          <option value="aprendizaje">Aprendizaje</option>
+          <option value="pasantia">Pasantía en la empresa</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Horas de prácticas a la semana</label>
+        <input type="number" id="f-horas" placeholder="30" oninput="calcFormativa()">
+        <span class="hint" id="f-horas-hint">Jornada máxima: 30 h/semana (práctica preprofesional)</span>
+      </div>
+      <div class="field">
+        <label>Fecha de inicio del convenio</label>
+        <input type="date" id="f-fecha-inicio" onchange="calcFormativa()">
+      </div>
+      <div class="field">
+        <label>Importe de la subvención económica mensual (según convenio)</label>
+        <input type="number" id="f-subvencion" placeholder="0.00" oninput="calcFormativa()">
+        <span class="hint">Varía según lo que pacte cada empresa — no puede ser menor al mínimo legal</span>
+      </div>
+      <div class="field">
+        <label class="hint">Mínimo legal según tus horas (referencia)</label>
+        <input type="text" id="f-minimo-legal" disabled>
+      </div>
+    </div>
+    <hr class="divider">
+    <table class="ledger" id="f-ledger"></table>
+    <div class="stat-bar-wrap">
+      <div class="stat-bar-label"><span>Progreso hacia el descanso de 15 días</span><span id="f-bar-label">0 / 12 meses</span></div>
+      <div class="stat-bar"><div class="stat-bar-fill accent" id="f-bar-fill" style="width:0%;"></div></div>
+    </div>
+    <div class="note-box" id="f-descanso-note"></div>
+    <div class="note-box">
+      <b>Seguro:</b> la empresa debe cubrir los riesgos de enfermedad y accidentes del practicante a través de EsSalud, <b>o de un seguro privado</b> con cobertura equivalente a 14 subvenciones mensuales (enfermedad) y 30 subvenciones mensuales (accidente).<br><br>
+      <b>Subvención adicional:</b> equivalente al 50% de una subvención mensual, otorgada cada 6 meses continuos de duración del convenio (independiente del descanso de 15 días).
+    </div>
+  </div>
+</div>`;
+const JORNADA_MAX_FORMATIVA = { preprofesional:30, profesional:48, capacitacion:48, aprendizaje:48, pasantia:48 };
+const MODALIDAD_LABEL = { preprofesional:'práctica preprofesional', profesional:'práctica profesional', capacitacion:'capacitación laboral juvenil', aprendizaje:'aprendizaje', pasantia:'pasantía en la empresa' };
+function onModalidadChange(){
+  const jm = JORNADA_MAX_FORMATIVA[sel('f-modalidad')];
+  document.getElementById('f-horas').placeholder = jm;
+  document.getElementById('f-horas-hint').textContent = `Jornada máxima: ${jm} h/semana (${MODALIDAD_LABEL[sel('f-modalidad')]})`;
+  calcFormativa();
+}
+function calcFormativa(){
+  const jornadaMax = JORNADA_MAX_FORMATIVA[sel('f-modalidad')];
+  const horas = num('f-horas')||jornadaMax;
+  const proporcion = Math.min(1, horas/jornadaMax);
+  const minimoLegal = RMV*proporcion;
+  document.getElementById('f-minimo-legal').value = fmt(minimoLegal);
+
+  const subvencion = num('f-subvencion');
+  const bajoMinimo = subvencion>0 && subvencion < minimoLegal;
+
+  let rows='';
+  rows += `<tr><td>Mínimo legal (RMV × ${horas}h / ${jornadaMax}h)</td><td>${fmt(minimoLegal)}</td></tr>`;
+  rows += `<tr class="${bajoMinimo?'tag-sub':'total'}"><td>Subvención mensual pactada</td><td>${fmt(subvencion)}</td></tr>`;
+  if(bajoMinimo) rows += `<tr class="sub"><td colspan="2" style="color:var(--danger);">⚠ Está por debajo del mínimo legal para esas horas de práctica.</td></tr>`;
+  document.getElementById('f-ledger').innerHTML = rows;
+
+  // Descanso de 15 días — se otorga una sola vez, al superar los 12 meses de convenio
+  const fechaInicio = parseDate(sel('f-fecha-inicio'));
+  const noteEl = document.getElementById('f-descanso-note');
+  const barFill = document.getElementById('f-bar-fill');
+  const barLabel = document.getElementById('f-bar-label');
+  if(!fechaInicio || !subvencion){
+    noteEl.textContent = 'Completa la fecha de inicio y la subvención mensual para calcular tu descanso de 15 días.';
+    barFill.style.width = '0%';
+    barLabel.textContent = '0 / 12 meses';
+    return;
+  }
+  const hoy = new Date();
+  const {meses, dias} = diffMesesDias30(fechaInicio, hoy);
+  const pagoDescanso = (subvencion/30)*15;
+  const mesesCap = Math.min(12, meses);
+  barFill.style.width = ((mesesCap/12)*100).toFixed(1)+'%';
+  barLabel.textContent = `${mesesCap} / 12 meses`;
+  if(meses >= 12){
+    noteEl.innerHTML = `<b>✓ Corresponde el descanso de 15 días</b> — tu convenio superó los 12 meses (llevas ${meses} meses ${dias} días). Pago del descanso (subvención/30 × 15): <b>${fmt(pagoDescanso)}</b>.`;
+  } else {
+    const faltanMeses = 12-meses;
+    noteEl.textContent = `Llevas ${meses} meses y ${dias} días de convenio. Te faltan aproximadamente ${faltanMeses} meses para tener derecho al descanso de 15 días (se otorga una sola vez, al superar los 12 meses).`;
+  }
+}
+
+
+/* ============ VOLVER A CALCULAR / INIT ============ */
+function recalcularTodo(){
+  calcMensual();
+  calcPeriodoGrat();
+  calcPeriodoCTS();
+  calcVac();
+  calcLiquidacion();
+  calcFormativa();
+  refreshBasicoBanners();
+}
+showPanel('config');
+toggleAFP();
+recalcularTodo();
 </script>
 </body>
 </html>
