@@ -322,8 +322,8 @@ table.ledger{width:100%;border-collapse:collapse;font-family:'Inter',sans-serif;
       y ejecuta en el SQL Editor:
         select rechazar_pago('PEGA-AQUI-EL-ID');
       Eso le quita los 30 días que se autoasignó esa cuenta. */
-const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';       // ← reemplaza esto
-const SUPABASE_ANON_KEY = 'TU-ANON-KEY-PUBLICA-AQUI';          // ← reemplaza esto
+const SUPABASE_URL = 'NEXT_PUBLIC_SUPABASE_URL=https://masqldpkspirxfknarrz.supabase.co';       // ← reemplaza esto
+const SUPABASE_ANON_KEY = 'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_ql6pw16swHEGNxNymt_M0g_lQf1AY82';          // ← reemplaza esto
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const SESSION_STORAGE_KEY = 'bf_session_id';
